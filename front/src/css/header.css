@@ -1,0 +1,16 @@
+h1 {
+  float: left;
+}
+.button {
+  float: right;
+  height: 100%;
+  line-height: 85px;
+}
+.header {
+  height: 85px;
+}
+.header::after {
+  content: "";
+  display: block;
+  clear: both;
+}

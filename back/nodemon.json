@@ -1,0 +1,5 @@
+{
+  "watch": ["index.js", "nodemon.json", "models", "routes", "config"],
+  "exec": "node index.js",
+  "ext": "js json"
+}

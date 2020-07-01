@@ -1,0 +1,10 @@
+.layout-content {
+  width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+.layout-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}

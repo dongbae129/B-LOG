@@ -1,0 +1,9 @@
+.side-wrap {
+  width: 280px;
+  height: 500px;
+  float: right;
+  border: 1px solid red;
+}
+.menu_my_blog {
+  display: flex;
+}

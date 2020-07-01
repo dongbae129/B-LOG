@@ -1,0 +1,10 @@
+.content-wrap {
+  width: 770px;
+  float: left;
+  border: 1px solid black;
+}
+.content {
+  width: 100%;
+  border-bottom: 1px solid #eeeeef;
+  padding: 25px 0;
+}
