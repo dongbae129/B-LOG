@@ -27,8 +27,8 @@ const dummy = [
 const Content = () => {
   return (
     <div className="content-wrap">
-      {dummy.map((v) => (
-        <Detail props={v} />
+      {dummy.map((v, i) => (
+        <Detail props={v} key={v + i} />
       ))}
     </div>
   );
