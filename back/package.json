@@ -26,7 +26,8 @@
     "path": "^0.12.7",
     "sequelize": "^6.2.4",
     "sequelize-cli": "^6.1.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "lodash": ">=4.17.19"
   },
   "devDependencies": {
     "eslint": "^7.3.1",
