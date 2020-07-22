@@ -5,6 +5,9 @@ const router = express.Router();
 const passport = require("passport");
 const path = require("path");
 const multer = require("multer");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 const { isLoggedIn } = require("./middleware");
 
 const storage = multer.diskStorage({
@@ -20,8 +23,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post("/uploads", upload.array("image"), (req, res) => {
-  console.log(req.files, "1");
-  console.log(req.body, "2");
   res.json(req.files.map((file) => file.filename));
 });
 router.get("/", isLoggedIn, (req, res) => {
@@ -39,7 +40,6 @@ router.post("/", async (req, res, next) => {
       where: { userId: req.body.id },
     });
     if (duplicate_user) {
-      console.log(duplicate_user, "###");
       return res.status(400).send("중복된 아이디");
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
@@ -50,7 +50,6 @@ router.post("/", async (req, res, next) => {
     });
     const deleted_passw_user = Object.assign({}, user.toJSON());
     delete deleted_passw_user.password;
-    console.log(deleted_passw_user);
     return res.json(deleted_passw_user);
   } catch (e) {
     console.error(e);
@@ -67,13 +66,57 @@ router.post("/login", (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.login(user, (loginErr) => {
+    return req.login(user, async (loginErr) => {
       if (loginErr) return next(loginErr);
-      const filteredUser = Object.assign({}, user.toJSON());
-      delete filteredUser.password;
-      return res.json(filteredUser);
+      // const filteredUser = Object.assign({}, user.toJSON());
+      // delete filteredUser.password;
+      const subscribe = await db.Subscribe.findAll({
+        where: {
+          [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+        },
+      });
+      const fullUser = { subscribe, ...user.toJSON() };
+      // console.log(fullUser, "(()()()");
+      return res.json(fullUser);
     });
   })(req, res, next);
 });
 
+router.post("/logout", isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send("success logout");
+});
+
+router.post("/subscribe", isLoggedIn, async (req, res) => {
+  try {
+    console.log(req.query, "**");
+    const subscribe = await db.Subscribe.create({
+      userId: req.user.userId,
+      userNickname: req.user.nickname,
+      toUserId: req.query.id,
+      checked: false,
+    });
+    res.json(subscribe);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+router.post("/acceptSubscribe", isLoggedIn, async (req, res) => {
+  try {
+    console.log(req.query, "((())");
+    const acceptSubs = await db.Subscribe.update(
+      { checked: true },
+      {
+        where: {
+          [Op.and]: [{ toUserId: req.user.userId }, { userId: req.query.id }],
+        },
+      }
+    );
+    res.json(acceptSubs);
+  } catch (e) {
+    console.error(e);
+  }
+});
 module.exports = router;

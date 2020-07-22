@@ -1,18 +1,20 @@
 import React from "react";
 import { useInput } from "./Signuppage";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LOG_IN_REQUEST } from "../reducers/user";
+import Main from "./Main";
 
-const Loginpage = () => {
+const Loginpage = (props) => {
   const [id, onChangeId] = useInput("");
   const [password, onChangePassw] = useInput("");
+  const { subscribe } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   const submitForm = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(id, password);
       dispatch({
         type: LOG_IN_REQUEST,
         data: { id, password },
@@ -21,6 +23,7 @@ const Loginpage = () => {
     [dispatch, id, password]
   );
 
+  if (subscribe.userId) return <Main />;
   return (
     <div>
       <form>

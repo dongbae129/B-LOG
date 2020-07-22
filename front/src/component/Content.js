@@ -1,35 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/content.css";
 import Detail from "./Detail";
-const dummy = [
-  {
-    title: "제목1",
-    name: "작성자",
-    time: "시간",
-    hash: "#해쉬태그",
-    descrip: "내용",
-  },
-  {
-    title: "제목2",
-    name: "작성자",
-    time: "시간",
-    hash: "#해쉬태그",
-    descrip: "내용",
-  },
-  {
-    title: "제목3",
-    name: "작성자",
-    time: "시간",
-    hash: "#해쉬태그",
-    descrip: "내용",
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import { GET_POSTS_REQUEST } from "../reducers/post";
+
 const Content = () => {
+  const { mainPost } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: GET_POSTS_REQUEST,
+    });
+  }, [dispatch]);
+
   return (
     <div className="content-wrap">
-      {dummy.map((v, i) => (
-        <Detail props={v} key={v + i} />
-      ))}
+      {mainPost.map && mainPost.map((v, i) => <Detail props={v} key={v + i} />)}
     </div>
   );
 };

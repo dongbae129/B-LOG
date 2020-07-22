@@ -1,17 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  const Subscribe = sequelize.define(
+    "Subscribe",
     {
       userId: {
         type: DataTypes.STRING(),
         allowNull: false,
       },
-      password: {
+      userNickname: {
         type: DataTypes.STRING(),
         allowNull: false,
       },
-      nickname: {
+      toUserId: {
         type: DataTypes.STRING(),
+        allowNull: false,
+      },
+      checked: {
+        type: DataTypes.BOOLEAN(),
         allowNull: false,
       },
     },
@@ -20,9 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8_general_ci",
     }
   );
-  User.associate = (db) => {
-    db.User.hasMany(db.Post);
-    // db.User.hasMany(db.Subscribe);
-  };
-  return User;
+  // Subscribe.associate = (db) => {
+  //   db.Subscribe.belongsTo(db.User);
+  // };
+  return Subscribe;
 };

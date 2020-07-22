@@ -4,19 +4,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { GET_USER_INFO_REQUEST } from "../reducers/user";
 import { Link } from "react-router-dom";
-const dummy_user = {
-  id: "아이디",
-  img: "이미지",
-};
+
 const UserSide = () => {
   const { user } = useSelector((state) => state.user);
+  const { subscribe } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
       type: GET_USER_INFO_REQUEST,
     });
   }, [dispatch]);
-  console.log(user, "&&");
+  // if (subscribe.subscribe) {
+  //   alert(subscribe.subscribe.length + "명이 친구추가를 하였습니다");
+  // }
+
   return (
     <aside className="side-wrap">
       <div className="side">
@@ -33,6 +34,12 @@ const UserSide = () => {
             <div className="my_blog">내 블로그</div>
             <div className="neighbor">
               <Link to="/write">글쓰기</Link>
+              <Link to={{ pathname: "/subscribe", state: subscribe }}>
+                <div>
+                  {subscribe.subscribe &&
+                    subscribe.subscribe.filter((v) => !v.checked).length}
+                </div>
+              </Link>
             </div>
           </nav>
         </div>

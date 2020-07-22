@@ -1,0 +1,30 @@
+import React from "react";
+import { useDispatch } from "react-redux";
+import { ACCEPT_SUBSCRIBE_USER_REQUEST } from "../reducers/user";
+
+const Subscribe = (props) => {
+  const dispatch = useDispatch();
+  console.log(props);
+  const { subscribe } = props.location.state;
+
+  const onClickAcceptSubs = (userId) => () => {
+    dispatch({
+      type: ACCEPT_SUBSCRIBE_USER_REQUEST,
+      data: userId,
+    });
+  };
+  return (
+    <>
+      {subscribe.map((v) => (
+        <div>
+          <span>
+            {v.userNickname}({v.userId})
+          </span>
+          <span onClick={onClickAcceptSubs(v.userId)}>친구수락</span>
+        </div>
+      ))}
+    </>
+  );
+};
+
+export default Subscribe;

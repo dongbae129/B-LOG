@@ -6,8 +6,10 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Loginpage from "./pages/Loginpage";
 import Signuppage from "./pages/Signuppage";
-import Detailpage from "./pages/Detailpage";
 import WritePage from "./pages/WritePage";
+import Personalpage from "./pages/Personalpage";
+import Subscribe from "./pages/Subscribe";
+import DetailPage from "./pages/DetailPage";
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
       <Route path="/" component={Main} exact />
       <Route path="/login" component={Loginpage} />
       <Route path="/signup" component={Signuppage} />
-      <Route path="/detail" component={Detailpage} />
       <Route path="/write" component={WritePage} />
+      <Route path="/detail" component={DetailPage} />
+      <Route path="/personal/:nickname" component={Personalpage} />
+      <Route path="/subscribe" component={Subscribe} />
     </BrowserRouter>
   );
 }

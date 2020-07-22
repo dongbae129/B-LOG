@@ -18,6 +18,61 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage, fileSize: 20 * 1024 * 1024 });
 
+router.get("/", async (req, res) => {
+  try {
+    const posts = await db.Post.findAll({
+      include: [
+        {
+          model: db.User,
+          attributes: ["nickname", "userId", "id"],
+        },
+        {
+          model: db.Image,
+          attributes: ["src"],
+        },
+        {
+          model: db.Hashtag,
+          attributes: ["hashtag"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+router.get("/:userId", async (req, res) => {
+  try {
+    const user = await db.User.findOne({
+      where: { userId: req.params.userId },
+      attributes: ["id"],
+    });
+    const id = user.toJSON().id;
+    const posts = await db.Post.findAll({
+      where: { UserId: id },
+      include: [
+        {
+          model: db.User,
+          attributes: ["nickname"],
+        },
+        {
+          model: db.Image,
+          attributes: ["src"],
+        },
+        {
+          model: db.Hashtag,
+          attributes: ["hashtag"],
+        },
+      ],
+    });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 router.post("/", isLoggedIn, upload.none(), async (req, res) => {
   try {
     const newPost = await db.Post.create({

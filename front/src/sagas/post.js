@@ -7,6 +7,9 @@ import {
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILURE,
   UPLOAD_IMAGE_REQUEST,
+  GET_POSTS_SUCCESS,
+  GET_POSTS_FAILURE,
+  GET_POSTS_REQUEST,
 } from "../reducers/post";
 
 function uploadImageAPI(data) {
@@ -56,6 +59,31 @@ function* watchUploadPost() {
   yield takeEvery(UPLOAD_POST_REQUEST, uploadPost);
 }
 
+function getPostsAPI(nick) {
+  return axios.get(nick ? `/post/${nick}` : "/post");
+}
+function* getPosts(action) {
+  try {
+    const result = yield call(getPostsAPI, action.data);
+    yield put({
+      type: GET_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e, "##");
+    yield put({
+      type: GET_POSTS_FAILURE,
+    });
+  }
+}
+function* watchGetPosts() {
+  yield takeEvery(GET_POSTS_REQUEST, getPosts);
+}
+
 export default function* postSaga() {
-  yield all([fork(watchUploadPost), fork(watchUploadImage)]);
+  yield all([
+    fork(watchUploadPost),
+    fork(watchUploadImage),
+    fork(watchGetPosts),
+  ]);
 }

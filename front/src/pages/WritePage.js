@@ -77,7 +77,6 @@ const WritePage = () => {
 
   const onChangevalue = (e) => {
     setValue(e);
-    console.log(value);
   };
 
   const onChangeTitle = (e) => {
@@ -85,7 +84,6 @@ const WritePage = () => {
   };
   const onChangeHashtag = (e) => {
     setHashtag(e.target.value);
-    console.log(hashtag, typeof hashtag);
   };
 
   const onSubmitForm = (e) => {

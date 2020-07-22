@@ -2,8 +2,17 @@ import React from "react";
 import "../css/header.css";
 import { Link, Route } from "react-router-dom";
 import Loginpage from "../pages/Loginpage";
+import { useSelector, useDispatch } from "react-redux";
+import { LOG_OUT_REQUEST } from "../reducers/user";
 
 const Header = () => {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const onClickLogout = () => {
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
+  };
   return (
     <>
       <div className="header">
@@ -12,9 +21,14 @@ const Header = () => {
         </Link>
 
         <div className="button">
-          <Link to="/login">
-            <button>로그인</button>
-          </Link>
+          {user ? (
+            <button onClick={onClickLogout}>로그아웃</button>
+          ) : (
+            <Link to="/login">
+              <button>로그인</button>
+            </Link>
+          )}
+
           <Link to="/signup">
             <button>회원가입</button>
           </Link>
