@@ -34,6 +34,9 @@ router.get("/", async (req, res) => {
           model: db.Hashtag,
           attributes: ["hashtag"],
         },
+        {
+          model: db.PostCount,
+        },
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -65,6 +68,9 @@ router.get("/:userId", async (req, res) => {
           model: db.Hashtag,
           attributes: ["hashtag"],
         },
+        {
+          model: db.PostCount,
+        },
       ],
     });
     res.json(posts);
@@ -75,10 +81,15 @@ router.get("/:userId", async (req, res) => {
 
 router.post("/", isLoggedIn, upload.none(), async (req, res) => {
   try {
+    console.log(req.body, "*********");
     const newPost = await db.Post.create({
       title: req.body.title,
       description: req.body.description,
       UserId: req.user.id,
+    });
+    await db.PostCount.create({
+      hit: 0,
+      PostId: newPost.id,
     });
     if (req.body.image_src_arr.length !== 0) {
       await Promise.all(
@@ -116,6 +127,9 @@ router.post("/", isLoggedIn, upload.none(), async (req, res) => {
           model: db.Hashtag,
           attributes: ["hashtag"],
         },
+        {
+          model: db.PostCount,
+        },
       ],
     });
 
@@ -128,5 +142,17 @@ router.post("/", isLoggedIn, upload.none(), async (req, res) => {
 router.post("/image", upload.array("image"), (req, res) => {
   console.log(req.files);
   res.send("sussusu");
+});
+
+router.post("/count/:postId", async (req, res) => {
+  try {
+    await db.PostCount.increment(
+      { hit: 1 },
+      { where: { PostId: req.params.postId } }
+    );
+    res.send("success");
+  } catch (e) {
+    console.error(e);
+  }
 });
 module.exports = router;

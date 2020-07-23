@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     db.Post.belongsTo(db.User);
     db.Post.hasMany(db.Image);
     db.Post.hasMany(db.Hashtag);
+    db.Post.hasOne(db.PostCount);
   };
   return Post;
 };
