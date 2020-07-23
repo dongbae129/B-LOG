@@ -19,6 +19,10 @@ export const GET_USER_POSTS_REQUEST = "GET_USER_POSTS_REQUEST";
 export const GET_USER_POSTS_SUCCESSS = "GET_USER_POSTS_SUCCESSS";
 export const GET_USER_POSTS_FAILURE = "GET_USER_POSTS_FAILURE";
 
+export const PLUS_POST_COUNT_REQUEST = "PLUS_POST_COUNT_REQUEST";
+export const PLUS_POST_COUNT_SUCCESS = "PLUS_POST_COUNT_SUCCESS";
+export const PLUS_POST_COUNT_FAILURE = "PLUS_POST_COUNT_FAILURE";
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case UPLOAD_POST_REQUEST:

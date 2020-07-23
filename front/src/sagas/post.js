@@ -10,6 +10,9 @@ import {
   GET_POSTS_SUCCESS,
   GET_POSTS_FAILURE,
   GET_POSTS_REQUEST,
+  PLUS_POST_COUNT_SUCCESS,
+  PLUS_POST_COUNT_FAILURE,
+  PLUS_POST_COUNT_REQUEST,
 } from "../reducers/post";
 
 function uploadImageAPI(data) {
@@ -80,10 +83,32 @@ function* watchGetPosts() {
   yield takeEvery(GET_POSTS_REQUEST, getPosts);
 }
 
+function PostCountAPI(postId) {
+  return axios.post(`/post/count/${postId}`, {});
+}
+function* PostCount(action) {
+  try {
+    const result = yield call(PostCountAPI, action.data);
+    yield put({
+      type: PLUS_POST_COUNT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e, "##");
+    yield put({
+      type: PLUS_POST_COUNT_FAILURE,
+    });
+  }
+}
+function* watchPostCount() {
+  yield takeEvery(PLUS_POST_COUNT_REQUEST, PostCount);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchUploadPost),
     fork(watchUploadImage),
     fork(watchGetPosts),
+    fork(watchPostCount),
   ]);
 }
