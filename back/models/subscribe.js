@@ -2,10 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Subscribe = sequelize.define(
     "Subscribe",
     {
-      userId: {
-        type: DataTypes.STRING(),
-        allowNull: false,
-      },
       userNickname: {
         type: DataTypes.STRING(),
         allowNull: false,

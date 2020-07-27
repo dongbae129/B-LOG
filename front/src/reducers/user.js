@@ -2,6 +2,7 @@ export const initialState = {
   user: null,
   signedup: false,
   subscribe: [],
+  login: false,
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -41,6 +42,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: action.data,
+        login: true,
       };
     }
     case LOG_OUT_SUCCESSS: {
@@ -48,12 +50,14 @@ export default (state = initialState, action) => {
         ...state,
         user: null,
         subscribe: [],
+        login: false,
       };
     }
     case LOG_IN_SUCCESSS: {
       return {
         ...state,
-        subscribe: action.data,
+        user: action.data,
+        login: true,
       };
     }
 

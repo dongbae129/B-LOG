@@ -6,7 +6,7 @@ import { GET_USER_INFO_REQUEST } from "../reducers/user";
 import { Link } from "react-router-dom";
 
 const UserSide = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user, login } = useSelector((state) => state.user);
   const { subscribe } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,19 +29,19 @@ const UserSide = () => {
               <span>로그아웃</span>
             </div>
           )}
-
-          <nav className="menu_my_blog">
-            <div className="my_blog">내 블로그</div>
-            <div className="neighbor">
-              <Link to="/write">글쓰기</Link>
-              <Link to={{ pathname: "/subscribe", state: subscribe }}>
-                <div>
-                  {subscribe.subscribe &&
-                    subscribe.subscribe.filter((v) => !v.checked).length}
+          {user && (
+            <div>
+              <nav className="menu_my_blog">
+                <div className="my_blog">내 블로그</div>
+                <div className="neighbor">
+                  <Link to="/write">글쓰기</Link>
+                  <Link to={{ pathname: "/subscribe", state: subscribe }}>
+                    <div>{user.subscribe && user.subscribe.length}</div>
+                  </Link>
                 </div>
-              </Link>
+              </nav>
             </div>
-          </nav>
+          )}
         </div>
       </div>
     </aside>

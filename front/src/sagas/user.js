@@ -73,12 +73,13 @@ function getUserInfoAPI(data) {
     withCredentials: true,
   });
 }
-function* getUserInfo() {
+function* getUserInfo(action) {
   try {
-    const result = yield call(getUserInfoAPI);
+    const result = yield call(getUserInfoAPI, action.data);
     yield put({
       type: GET_USER_INFO_SUCCESSS,
       data: result.data,
+      user: !action.data,
     });
   } catch (e) {
     console.error(e, "##");

@@ -39,7 +39,7 @@ const DetailPage = (props) => {
         <div>
           <strong>{User.nickname}</strong>
           <br />
-          <span>여기는 userId</span>
+          <span>({User.userId})</span>
         </div>
         <button onClick={onClickSubscirbe}>이웃추가</button>
       </div>

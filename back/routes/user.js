@@ -25,10 +25,17 @@ const upload = multer({ storage: storage });
 router.post("/uploads", upload.array("image"), (req, res) => {
   res.json(req.files.map((file) => file.filename));
 });
-router.get("/", isLoggedIn, (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
   try {
-    const user = Object.assign({}, req.user.toJSON());
-    delete user.password;
+    const subscribe = await db.Subscribe.findAll({
+      where: {
+        [Op.and]: [{ UserId: req.user.userId }, { checked: true }],
+
+      }
+    });
+    const user = { subscribe, ...req.user.toJSON()}
+    // const user = Object.assign({}, req.user.toJSON());
+    // delete user.password;
     return res.json(user);
   } catch (e) {
     console.error(e);
@@ -72,12 +79,12 @@ router.post("/login", (req, res, next) => {
       // delete filteredUser.password;
       const subscribe = await db.Subscribe.findAll({
         where: {
-          [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+          [Op.and]: [{ UserId: req.user.userId }, { checked: false }],
         },
       });
       const fullUser = { subscribe, ...user.toJSON() };
       // console.log(fullUser, "(()()()");
-      return res.json(fullUser);
+      return res.json(user);
     });
   })(req, res, next);
 });
@@ -92,7 +99,7 @@ router.post("/subscribe", isLoggedIn, async (req, res) => {
   try {
     console.log(req.query, "**");
     const subscribe = await db.Subscribe.create({
-      userId: req.user.userId,
+      UserId: req.user.userId,
       userNickname: req.user.nickname,
       toUserId: req.query.id,
       checked: false,
