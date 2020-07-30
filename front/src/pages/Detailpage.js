@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "../css/detail.css";
 import { useDispatch } from "react-redux";
 import { SUBSCRIBE_USER_REQUEST } from "../reducers/user";
 import { PLUS_POST_COUNT_REQUEST } from "../reducers/post";

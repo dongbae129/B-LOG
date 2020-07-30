@@ -29,11 +29,12 @@ router.get("/", isLoggedIn, async (req, res) => {
   try {
     const subscribe = await db.Subscribe.findAll({
       where: {
-        [Op.and]: [{ UserId: req.user.userId }, { checked: true }],
-
-      }
+        [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+      },
     });
-    const user = { subscribe, ...req.user.toJSON()}
+    console.log(req.user.toJSON(), "**");
+    console.log(subscribe, "&&");
+    const user = { subscribe, ...req.user.toJSON() };
     // const user = Object.assign({}, req.user.toJSON());
     // delete user.password;
     return res.json(user);
@@ -98,8 +99,9 @@ router.post("/logout", isLoggedIn, (req, res) => {
 router.post("/subscribe", isLoggedIn, async (req, res) => {
   try {
     console.log(req.query, "**");
+    console.log(req.user, "^^");
     const subscribe = await db.Subscribe.create({
-      UserId: req.user.userId,
+      UserId: req.user.id,
       userNickname: req.user.nickname,
       toUserId: req.query.id,
       checked: false,
@@ -117,7 +119,7 @@ router.post("/acceptSubscribe", isLoggedIn, async (req, res) => {
       { checked: true },
       {
         where: {
-          [Op.and]: [{ toUserId: req.user.userId }, { userId: req.query.id }],
+          [Op.and]: [{ toUserId: req.user.userId }, { UserId: req.query.id }],
         },
       }
     );

@@ -1,9 +1,112 @@
+.pointer {
+  cursor: pointer;
+  /* color: #ced4da; */
+}
+.pointer:hover {
+  border-bottom: 1px solid black;
+}
 .side-wrap {
   width: 280px;
-  height: 500px;
+  height: 350px;
   float: right;
-  border: 1px solid red;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background-clip: border-box;
+}
+.side-wrap::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.profile {
+  background-color: #f8f9fa;
+}
+
+.user-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  /* border: 1px solid black; */
+  background-color: white;
+}
+.my_account {
+  margin-bottom: 20px;
+}
+.my_account.head {
+  display: flex;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.user-icon img {
+  width: 100%;
+  height: 100%;
+}
+.my_account.info {
+  margin-left: 10px;
+}
+.my_account.head.logout {
+  position: relative;
+  right: -100px;
+  height: 30px;
+  margin: 10px;
+  align-items: center;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  padding-top: 0;
 }
 .menu_my_blog {
+  background-color: white;
+}
+.menu_my_blog .blog {
   display: flex;
+  font-size: 17px;
+  border: 1px solid #dee2e6;
+}
+.menu_my_blog .gomy {
+  width: 50%;
+  border-right: 1px solid #dee2e6;
+  text-align: center;
+}
+.menu_my_blog .texting {
+  text-align: center;
+  width: 50%;
+}
+.menu_my_blog .texting a {
+  text-decoration: none;
+  color: #212529;
+}
+.menu_my_blog a:hover {
+  text-decoration: underline;
+}
+.menu_my_blog.neighbor {
+  margin-top: 5px;
+  display: flex;
+  font-size: 17px;
+}
+.menu_my_blog.neighbor .neighborlist {
+  /* width: 50%; */
+  /* justify-content: center; */
+  /* text-align: center; */
+  margin-left: 20px;
+  margin-right: 6px;
+}
+.menu_my_blog.neighbor input {
+  width: 120px;
+  margin-right: 10px;
+}
+.menu_my_blog.neighbor .search {
+  /* background-image: url("/images/search.png"); */
+  width: 20px;
+}
+.menu_my_blog.neighbor .search img {
+  width: 100%;
+  height: 20px;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+.menu_my_blog.neighbor .search img:hover {
+  opacity: 1;
 }

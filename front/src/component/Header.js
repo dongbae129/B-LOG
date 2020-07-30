@@ -5,14 +5,19 @@ import Loginpage from "../pages/Loginpage";
 import { useSelector, useDispatch } from "react-redux";
 import { LOG_OUT_REQUEST } from "../reducers/user";
 
+export const onClickLogout = (dispatch) => () => {
+  dispatch({
+    type: LOG_OUT_REQUEST,
+  });
+};
 const Header = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const onClickLogout = () => {
-    dispatch({
-      type: LOG_OUT_REQUEST,
-    });
-  };
+  // const onClickLogout = () => {
+  //   dispatch({
+  //     type: LOG_OUT_REQUEST,
+  //   });
+  // };
   return (
     <>
       <div className="header">
@@ -21,17 +26,16 @@ const Header = () => {
         </Link>
 
         <div className="button">
-          {user ? (
-            <button onClick={onClickLogout}>로그아웃</button>
-          ) : (
-            <Link to="/login">
-              <button>로그인</button>
-            </Link>
+          {!user && (
+            <>
+              <Link to="/login">
+                <button>로그인</button>
+              </Link>
+              <Link to="/signup">
+                <button>회원가입</button>
+              </Link>
+            </>
           )}
-
-          <Link to="/signup">
-            <button>회원가입</button>
-          </Link>
         </div>
       </div>
       <hr />
