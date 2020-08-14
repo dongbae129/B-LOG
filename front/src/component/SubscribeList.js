@@ -1,9 +1,7 @@
 import React from "react";
 
-const SubscribeList = (user) => {
-  const { subscribe } = user.user;
-
-  console.log(subscribe, "@");
+const SubscribeList = ({ st }) => {
+  const { subscribe } = st;
   return (
     <div
       style={{

@@ -4,21 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .aa {
+        border: 1px solid black;
+      }
+      .aa:hover {
+        border-bottom-color: red;
+      }
+    </style>
   </head>
   <body>
-    <div id="editor-container" style="height: 375px;">11</div>
-    <script>
-      var quill = new Quill("#editor-container", {
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, false] }],
-            ["bold", "italic", "underline"],
-            ["image", "code-block"],
-          ],
-        },
-        placeholder: "Compose an epic...",
-        theme: "snow", // or 'bubble'
-      });
-    </script>
+    <div class="aa"><a href="#">aa</a></div>
   </body>
 </html>

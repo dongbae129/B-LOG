@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import "../css/userside.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { GET_USER_INFO_REQUEST } from "../reducers/user";
+import { GET_USER_INFO_REQUEST, LOG_IN_REQUEST } from "../reducers/user";
 import { Link } from "react-router-dom";
 import SubscribeList from "./SubscribeList";
 import { onClickLogout } from "./Header";
-// import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const UserSide = () => {
   const [checkUserList, setCheckUserList] = useState(false);
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -25,11 +25,27 @@ const UserSide = () => {
   const onClickUserList = () => {
     setCheckUserList((prev) => !prev);
   };
+  const onChangeId = (e) => {
+    setId(e.target.value);
+  };
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const onSubmitLogin = (e) => {
+    e.preventDefault();
+    dispatch(
+      {
+        type: LOG_IN_REQUEST,
+        data: { id, password },
+      },
+      [id, password]
+    );
+  };
   return (
     <aside className="side-wrap">
       <div className="side">
         <div className="profile">
-          {user && (
+          {user ? (
             <div className="my_accout">
               <div className="my_account head">
                 <div className="my_account user-icon">
@@ -49,12 +65,40 @@ const UserSide = () => {
                 </button>
               </div>
             </div>
+          ) : (
+            <div className="nouser">
+              <form onSubmit={onSubmitLogin}>
+                <div className="inputwrap">
+                  <input type="text" value={id} onChange={onChangeId} />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={onChangePassword}
+                  />
+                </div>
+                {/* <Link to="/"></Link> */}
+                <button type="submit">로그인</button>
+                <Link to="/signup">
+                  <button>회원가입</button>
+                </Link>
+              </form>
+            </div>
           )}
           {user && (
             <div>
               <nav className="menu_my_blog">
                 <div className="menu_my_blog blog">
-                  <div className="menu_my_blog gomy pointer">내 블로그</div>
+                  <div className="menu_my_blog gomy pointer">
+                    <Link
+                      to={{
+                        pathname: `/personal/:${user.nickname}`,
+                        state: { user },
+                      }}
+                    >
+                      내 블로그
+                    </Link>
+                  </div>
+
                   <div className="menu_my_blog texting pointer">
                     <Link to="/write">글쓰기</Link>
                   </div>
@@ -73,7 +117,7 @@ const UserSide = () => {
                 </div>
                 {checkUserList && (
                   <div>
-                    <SubscribeList user={user} />
+                    <SubscribeList st={user} />
                   </div>
                 )}
 

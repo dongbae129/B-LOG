@@ -4,10 +4,30 @@ h1 {
 .button {
   float: right;
   height: 100%;
+  margin-right: 20px;
   line-height: 85px;
 }
+.button a {
+  margin-right: 5px;
+}
+.button button {
+  width: 80px;
+  height: 25px;
+  font-size: 15px;
+  background-color: #edf2ff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 800;
+}
+.button button:hover {
+  box-shadow: 2px 2px 6px rgb(102, 102, 102);
+}
 .header {
+  width: 1100px;
+  margin: 0 auto;
   height: 85px;
+  margin-bottom: 20px;
 }
 .header::after {
   content: "";

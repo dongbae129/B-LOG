@@ -1,0 +1,38 @@
+.signin-wrap {
+  width: 768px;
+  margin: 0 auto;
+}
+.signin-wrap_content {
+  width: 480px;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: #f1f3f5;
+}
+.signin-wrap_content input {
+  width: 100%;
+  height: 29px;
+  box-sizing: border-box;
+}
+.signin-wrap_content p {
+  color: red;
+}
+.signin-wrap_content button {
+  width: 100%;
+  margin-top: 10px;
+  height: 35px;
+  background-color: #e7f5ff;
+  color: #868e96;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 20px;
+}
+.signin-wrap_content button:hover {
+  box-shadow: 2px 2px 6px rgb(102, 102, 102);
+}
+.signin-wrap_content button:hover {
+  color: black;
+}

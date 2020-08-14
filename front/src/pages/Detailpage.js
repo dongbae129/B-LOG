@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import "../css/detail.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SUBSCRIBE_USER_REQUEST } from "../reducers/user";
 import { PLUS_POST_COUNT_REQUEST } from "../reducers/post";
 
 const DetailPage = (props) => {
+  const { user } = useSelector((state) => state.user);
+  const { userId, nickname } = props.location.state.User;
   const dispatch = useDispatch();
   const {
     title,
@@ -15,6 +17,8 @@ const DetailPage = (props) => {
     id,
     PostCount,
   } = props.location.state;
+
+  const nick = nickname.slice();
 
   useEffect(() => {
     dispatch({
@@ -28,33 +32,53 @@ const DetailPage = (props) => {
       data: User.userId,
     });
   };
-  console.log(props);
   return (
-    <div>
-      <div style={{ width: "171px", border: "1px solid black" }}>
-        <img
-          src="/images/aa.jpg"
-          alt=""
-          style={{ width: "161px", height: "161px" }}
-        />
-        <div>
-          <strong>{User.nickname}</strong>
-          <br />
-          <span>({User.userId})</span>
+    <div className="detail-wrapper">
+      <div className="personal-header detail_header">
+        <div className="user" style={{ marginRight: "10px" }}>
+          <div className="user_inner">
+            <img src="/images/aa.jpg" alt="" />
+            <div>
+              <strong>{nick}</strong>
+              <br />
+              <span>({userId})</span>
+            </div>
+            {user && user.userId === userId ? null : (
+              <div className="btn_area" onClick={onClickSubscirbe}>
+                <span>+</span> 이웃추가
+              </div>
+            )}
+          </div>
         </div>
-        <button onClick={onClickSubscirbe}>이웃추가</button>
+        <div className="famous_posts-wrapper">
+          <strong className="famous_posts-top strong-sect">공지사항</strong>
+        </div>
       </div>
-      <div className="content">
-        <h2>{title}</h2>
-        <span>조회수: {PostCount.hit + 1}</span>
 
-        <p>{User.nickname}</p>
+      <div className="detail_content">
+        <div className="detail_content_header">
+          <h2>{title}</h2>
+          <div className="detail_content_nick">
+            <p>{User.nickname}</p>
+            <p>{createdAt.slice(0, 10)}</p>
+          </div>
 
-        <p>{createdAt.slice(0, 10)}</p>
-        {Hashtags &&
-          Hashtags.map((v, i) => <span key={v + i}>#{v.hashtag}</span>)}
+          <span>조회수: {PostCount.hit + 1}</span>
+          <div>
+            {" "}
+            {Hashtags &&
+              Hashtags.map((v, i) => (
+                <span className="hashtag" key={v + i}>
+                  #{v.hashtag}
+                </span>
+              ))}
+          </div>
+        </div>
 
-        <div dangerouslySetInnerHTML={{ __html: description }}></div>
+        <div
+          className="detail_content_content"
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import sanitize from "sanitize-html";
 
 const ContentInfo = ({ props }) => {
-  let ht = sanitize(props.description, {
+  const ht = sanitize(props.description, {
     allowedTags: ["b", "i", "em", "strong", "a"],
   });
 

@@ -1,12 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_POSTS_REQUEST } from "../reducers/post";
-import Detail from "../component/Detail";
-import { SUBSCRIBE_USER_REQUEST } from "../reducers/user";
+
+import {
+  SUBSCRIBE_USER_REQUEST,
+  GET_USER_INFO_REQUEST,
+} from "../reducers/user";
+import "../css/personal.css";
+import ContentDiv from "../component/Content_div";
+
+import { ht } from "../component/Content_div";
 const Personalpage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
+  const { login, user } = useSelector((state) => state.user);
   const { nickname } = props.match.params;
   const { userId } = props.location.state.user;
+
+  console.log(mainPost, "%%");
+  const findPost_count = useCallback(() => {
+    let hitarr = [];
+    let finalarr = [];
+    let findPost = [];
+    mainPost.map(
+      (v) =>
+        v.PostCount &&
+        hitarr.push({ id: v.PostCount.PostId, hit: v.PostCount.hit })
+    );
+    hitarr.sort((a, b) => b.hit - a.hit);
+    finalarr = hitarr.slice(0, 3);
+
+    findPost = finalarr.map((v) => mainPost.filter((j) => j.id === v.id));
+    return findPost;
+  }, [mainPost]);
+  // if (mainPost.length > 0) {
+  //   findPost_count();
+  // }
+  findPost_count();
+
   const dispatch = useDispatch();
   const nick = nickname.slice(1);
   useEffect(() => {
@@ -14,9 +44,16 @@ const Personalpage = (props) => {
       type: GET_POSTS_REQUEST,
       data: userId,
     });
+    dispatch({
+      type: GET_USER_INFO_REQUEST,
+    });
   }, [dispatch, userId]);
 
   const onClickSubscirbe = () => {
+    if (!login) {
+      alert("로그인 해주세요!!");
+      return;
+    }
     dispatch({
       type: SUBSCRIBE_USER_REQUEST,
       data: userId,
@@ -24,37 +61,51 @@ const Personalpage = (props) => {
   };
   return (
     <div className="personal-wrapper">
-      <div className="personal-header" style={{ display: "flex" }}>
-        <div className="personal-header user" style={{ marginRight: "10px" }}>
-          <div style={{ width: "171px", border: "1px solid black" }}>
-            <img
-              src="/images/aa.jpg"
-              alt=""
-              style={{ width: "161px", height: "161px" }}
-            />
+      <div className="personal-header">
+        <div className="user" style={{ marginRight: "10px" }}>
+          <div className="user_inner">
+            <img src="/images/aa.jpg" alt="" />
             <div>
               <strong>{nick}</strong>
               <br />
-              <span>여기는 userId</span>
+              <span>({userId})</span>
             </div>
-            <button onClick={onClickSubscirbe}>이웃추가</button>
+            {user && user.userId === userId ? null : (
+              <div className="btn_area" onClick={onClickSubscirbe}>
+                <span>+</span> 이웃추가
+              </div>
+            )}
           </div>
         </div>
-        <div
-          className="psersonal-header famous_posts"
-          style={{ width: "600px", border: "1px solid black" }}
-        >
-          <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-          </ul>
+        <div className="famous_posts-wrapper">
+          <strong className="famous_posts-top strong-sect">TOP3</strong>
+
+          <div
+            className="famous_posts"
+            // style={{ width: "600px", border: "1px solid black" }}
+          >
+            <ol>
+              {findPost_count().map((v, i) => (
+                <li key={v + i}>
+                  {ht(v[0].description).length > 30
+                    ? ht(v[0].description).slice(0, 31) + "..."
+                    : ht(v[0].description)}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
-      <div className="personal-body">
-        {mainPost.map((v, i) => (
-          <Detail props={v} key={v + i} />
-        ))}
+      <div className="personal-content">
+        {/* <div className="personal-content_sublist">
+          {user && <SubscribeList st={user} />}
+        </div> */}
+        <div className="personal-content_body">
+          {mainPost.map((v, i) => (
+            <ContentDiv info={v} key={v + i} />
+            // <Detail props={v} key={v + i} />
+          ))}
+        </div>
       </div>
     </div>
   );

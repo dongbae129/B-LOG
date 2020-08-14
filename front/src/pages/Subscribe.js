@@ -4,7 +4,6 @@ import { ACCEPT_SUBSCRIBE_USER_REQUEST } from "../reducers/user";
 
 const Subscribe = (props) => {
   const dispatch = useDispatch();
-  console.log(props);
 
   const onClickAcceptSubs = (userId) => () => {
     dispatch({

@@ -1,0 +1,111 @@
+.personal-wrapper {
+  width: 1100px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.personal-header {
+  display: flex;
+  width: 1000px;
+  padding: 25px 0;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+.personal-header > .user {
+  margin: 10px 0;
+}
+.personal-header > .user > .user_inner {
+  width: 171px;
+  border-right: 1px solid #ced4da;
+  padding-right: 20px;
+}
+.user_inner img {
+  width: 100%;
+  height: 171px;
+}
+.personal-header > .famous_posts-wrapper {
+  height: 100px;
+  margin-top: 10px;
+}
+.strong-sect {
+  display: flex;
+  width: 600px;
+  flex-basis: 100%;
+  align-items: center;
+  color: #495057;
+  margin: 8px 0px;
+}
+.strong-sect::before,
+.strong-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: #ced4da;
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
+.personal-header .famous_posts {
+  width: 600px;
+  height: 100px;
+  align-items: center;
+  margin: 10px 0;
+  padding-left: 10px;
+}
+
+.personal-content {
+  margin-top: 20px;
+}
+.personal-content_sublist {
+  width: 200px;
+  height: 400px;
+  margin-right: 100px;
+  border: 1px solid black;
+  float: left;
+}
+.personal-content_body {
+  width: 1000px;
+  box-shadow: 2px 2px 6px rgb(102, 102, 102);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #f8f9fa;
+}
+.personal-content_body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.content_div_wrap {
+  border: none;
+  border-radius: 10px;
+  overflow-wrap: break-word;
+  transition: 0.3s;
+  background-color: white;
+}
+.content_div_wrap:hover {
+  transform: translateY(-10px);
+  transition: 0.3s;
+}
+.content_div_wrap img {
+  width: 100%;
+  height: 200px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.btn_area {
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px 0;
+  border: 1px solid #dbe4ff;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn_area:hover {
+  background-color: #e7f5ff;
+}
+.btn_area span {
+  font-size: 20px;
+  color: #38d9a9;
+}
