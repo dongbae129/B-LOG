@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_POSTS_REQUEST } from "../reducers/post";
 
@@ -16,20 +16,30 @@ const Personalpage = (props) => {
   const { nickname } = props.match.params;
   const { userId } = props.location.state.user;
 
-  console.log(mainPost, "%%");
+  const onClickPaging = (e) => {
+    dispatch({
+      type: GET_POSTS_REQUEST,
+      data: { userId, count: e.target.innerHTML * 9 - 9 },
+    });
+    console.log(e.target.innerHTML);
+  };
+
+  let fullCount = Math.ceil(mainPost.pageCount / 9) | 0;
+  console.log(fullCount, "!!!");
   const findPost_count = useCallback(() => {
     let hitarr = [];
     let finalarr = [];
     let findPost = [];
-    mainPost.map(
-      (v) =>
-        v.PostCount &&
-        hitarr.push({ id: v.PostCount.PostId, hit: v.PostCount.hit })
-    );
+    mainPost.posts &&
+      mainPost.posts.map(
+        (v) =>
+          v.PostCount &&
+          hitarr.push({ id: v.PostCount.PostId, hit: v.PostCount.hit })
+      );
     hitarr.sort((a, b) => b.hit - a.hit);
     finalarr = hitarr.slice(0, 3);
 
-    findPost = finalarr.map((v) => mainPost.filter((j) => j.id === v.id));
+    findPost = finalarr.map((v) => mainPost.posts.filter((j) => j.id === v.id));
     return findPost;
   }, [mainPost]);
   // if (mainPost.length > 0) {
@@ -42,8 +52,9 @@ const Personalpage = (props) => {
   useEffect(() => {
     dispatch({
       type: GET_POSTS_REQUEST,
-      data: userId,
+      data: { userId, count: 0 },
     });
+
     dispatch({
       type: GET_USER_INFO_REQUEST,
     });
@@ -101,11 +112,25 @@ const Personalpage = (props) => {
           {user && <SubscribeList st={user} />}
         </div> */}
         <div className="personal-content_body">
-          {mainPost.map((v, i) => (
-            <ContentDiv info={v} key={v + i} />
-            // <Detail props={v} key={v + i} />
-          ))}
+          {mainPost.posts &&
+            mainPost.posts.map((v, i) => (
+              <ContentDiv info={v} key={v + i} />
+              // <Detail props={v} key={v + i} />
+            ))}
         </div>
+      </div>
+      <div className="personal-pagingcount" onClick={onClickPaging}>
+        {Array(fullCount)
+          .fill(1)
+          .map((v, i) => (
+            <div key={i} tabIndex="1">
+              {i + 1}
+            </div>
+
+            // <div key={i} onClick={onClickPaging}>
+            //   {paging ? <div className="paging">{i + 1}</div> : i + 1}
+            // </div>
+          ))}
       </div>
     </div>
   );

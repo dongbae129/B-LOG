@@ -67,7 +67,7 @@ const formats = [
   "video",
 ];
 
-const WritePage = () => {
+const WritePage = (props) => {
   const [value, setValue] = useState();
   const [title, setTitle] = useState("");
   const [hashtag, setHashtag] = useState("");
@@ -108,6 +108,7 @@ const WritePage = () => {
         description: value,
         hashtag: hash_arr,
       },
+      push: props.history.push,
     });
   };
 

@@ -1,5 +1,6 @@
 import { all, fork, call, put, takeEvery } from "redux-saga/effects";
 import axios from "axios";
+
 import {
   UPLOAD_POST_FAILURE,
   UPLOAD_POST_REQUEST,
@@ -29,7 +30,7 @@ function* uploadImage(action) {
       data: result.data,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: UPLOAD_IMAGE_FAILURE,
     });
@@ -47,12 +48,14 @@ function uploadPostAPI(data) {
 function* uploadPost(action) {
   try {
     const result = yield call(uploadPostAPI, action.data);
+
     yield put({
       type: UPLOAD_POST_SUCCESS,
       data: result.data,
     });
+    action.push("/");
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: UPLOAD_POST_FAILURE,
     });
@@ -62,8 +65,10 @@ function* watchUploadPost() {
   yield takeEvery(UPLOAD_POST_REQUEST, uploadPost);
 }
 
-function getPostsAPI(nick) {
-  return axios.get(nick ? `/post/${nick}` : "/post");
+function getPostsAPI(data) {
+  return axios.get(
+    data ? `/post/${data.userId}?count=${data.count}&limit=9` : "/post"
+  );
 }
 function* getPosts(action) {
   try {
@@ -73,7 +78,7 @@ function* getPosts(action) {
       data: result.data,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: GET_POSTS_FAILURE,
     });
@@ -94,7 +99,7 @@ function* PostCount(action) {
       data: result.data,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: PLUS_POST_COUNT_FAILURE,
     });

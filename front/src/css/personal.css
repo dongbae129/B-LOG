@@ -109,3 +109,33 @@
   font-size: 20px;
   color: #38d9a9;
 }
+.personal-pagingcount {
+  display: flex;
+  justify-content: center;
+
+  width: 1000px;
+}
+.personal-pagingcount > div {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  margin-top: 10px;
+  font-size: 20px;
+  padding: 5px;
+  border: 2px solid #a5d8ff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.personal-pagingcount > div:hover {
+  background-color: #e7f5ff;
+}
+.personal-pagingcount > div:focus {
+  background-color: #e7f5ff;
+}
+.personal-pagingcount > label > input {
+  visibility: hidden;
+}
+.paging {
+  border: 1px solid blue;
+}

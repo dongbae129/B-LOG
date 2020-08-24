@@ -33,7 +33,7 @@ function* signup(action) {
       type: SIGN_UP_SUCCESSS,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: SIGN_UP_FAILURE,
     });
@@ -57,7 +57,7 @@ function* logIn(action) {
       data: result.data,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: LOG_IN_FAILURE,
     });
@@ -82,7 +82,7 @@ function* getUserInfo(action) {
       user: !action.data,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e, "@@");
     yield put({
       type: GET_USER_INFO_FAILURE,
     });
@@ -109,7 +109,7 @@ function* logOut() {
       type: LOG_OUT_SUCCESSS,
     });
   } catch (e) {
-    console.error(e, "##");
+    console.error(e);
     yield put({
       type: LOG_OUT_FAILURE,
     });

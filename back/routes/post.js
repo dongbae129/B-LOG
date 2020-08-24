@@ -48,6 +48,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
   try {
+    console.log(req.query, "$$$$");
     const user = await db.User.findOne({
       where: { userId: req.params.userId },
       attributes: ["id"],
@@ -72,8 +73,21 @@ router.get("/:userId", async (req, res) => {
           model: db.PostCount,
         },
       ],
+      offset: parseInt(req.query.count, 10),
+      limit: parseInt(req.query.limit, 10),
     });
-    res.json(posts);
+    const count = await db.Post.count({
+      where: { UserId: id },
+    });
+
+    const fullPosts = Object.assign({}, { posts, pageCount: count });
+
+    // const count = await db.Post.count({
+    //   where: { UserId: id },
+    // });
+    // console.log(count, " CCCCCCCCCCCCCCCCC");
+
+    res.json(fullPosts);
   } catch (e) {
     console.error(e);
   }
@@ -100,6 +114,17 @@ router.post("/", isLoggedIn, upload.none(), async (req, res) => {
           })
         )
       );
+      if (req.body.hashtag.length !== 0) {
+        await Promise.all(
+          req.body.hashtag.map((v) =>
+            db.Hashtag.create({
+              hashtag: v,
+              PostId: newPost.id,
+            })
+          )
+        );
+      }
+    } else {
       if (req.body.hashtag.length !== 0) {
         await Promise.all(
           req.body.hashtag.map((v) =>
