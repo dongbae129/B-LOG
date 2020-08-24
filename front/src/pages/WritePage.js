@@ -1,55 +1,56 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import ReactQuill, { Quill } from "react-quill";
-import ImageUpload from "quill-image-uploader";
+// import { Quill } from "react-quill";
+// import ImageUpload from "quill-image-uploader";
 
 // import { ImageResize } from "quill-image-resize-module";
-import "react-quill/dist/quill.snow.css";
+import "../css/quill.snow.css";
 import { UPLOAD_POST_REQUEST } from "../reducers/post";
+import { useEffect } from "react";
 
-Quill.register("modules/imageUpload", ImageUpload);
+// Quill.register("modules/imageUpload", ImageUpload);
 // Quill.register("modules/imageResize", ImageResize);
 
 const image_src_arr = [];
 
-const modules = {
-  toolbar: {
-    container: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      [{ size: [] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image", "video"],
-    ],
-  },
-  imageUpload: {
-    upload: (file) => {
-      return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append("image", file);
+// const modules = {
+//   toolbar: {
+//     container: [
+//       [{ header: "1" }, { header: "2" }, { font: [] }],
+//       [{ size: [] }],
+//       ["bold", "italic", "underline", "strike", "blockquote"],
+//       [
+//         { list: "ordered" },
+//         { list: "bullet" },
+//         { indent: "-1" },
+//         { indent: "+1" },
+//       ],
+//       ["link", "image", "video"],
+//     ],
+//   },
+//   imageUpload: {
+//     upload: (file) => {
+//       return new Promise((resolve, reject) => {
+//         const formData = new FormData();
+//         formData.append("image", file);
 
-        fetch("http://localhost:8020/api/user/uploads", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            image_src_arr.push(...result);
-            resolve(`http://localhost:8020/${result}`);
-          })
-          .catch((error) => {
-            reject("Upload failed");
-            console.error("Error:", error);
-          });
-      });
-    },
-  },
-};
+//         fetch("http://localhost:8020/api/user/uploads", {
+//           method: "POST",
+//           body: formData,
+//         })
+//           .then((response) => response.json())
+//           .then((result) => {
+//             image_src_arr.push(...result);
+//             resolve(`http://localhost:8020/${result}`);
+//           })
+//           .catch((error) => {
+//             reject("Upload failed");
+//             console.error("Error:", error);
+//           });
+//       });
+//     },
+//   },
+// };
 const formats = [
   "header",
   "font",
@@ -71,6 +72,78 @@ const WritePage = (props) => {
   const [value, setValue] = useState();
   const [title, setTitle] = useState("");
   const [hashtag, setHashtag] = useState("");
+  const [isOpen, setOpen] = useState(false);
+  const [quillOpen, setQuill] = useState(false);
+
+  let Quill =
+    quillOpen && typeof window === "object"
+      ? require("react-quill")
+      : () => false;
+
+  // Quill.register("modules/imageUpload", ImageUpload);
+  const modules = {
+    toolbar: {
+      container: [
+        [{ header: "1" }, { header: "2" }, { font: [] }],
+        [{ size: [] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
+        ["link", "image", "video"],
+      ],
+    },
+    // imageUpload: {
+    //   upload: (file) => {
+    //     return new Promise((resolve, reject) => {
+    //       const formData = new FormData();
+    //       formData.append("image", file);
+
+    //       fetch("http://localhost:8020/api/user/uploads", {
+    //         method: "POST",
+    //         body: formData,
+    //       })
+    //         .then((response) => response.json())
+    //         .then((result) => {
+    //           image_src_arr.push(...result);
+    //           resolve(`http://localhost:8020/${result}`);
+    //         })
+    //         .catch((error) => {
+    //           reject("Upload failed");
+    //           console.error("Error:", error);
+    //         });
+    //     });
+    //   },
+    // },
+  };
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ];
+
+  let ReactQuill =
+    isOpen && typeof window === "object" ? require("react-quill") : () => false;
+
+  useEffect(() => {
+    setOpen(true);
+    setQuill(true);
+  }, []);
+
   const dispatch = useDispatch();
   // const quillElement = useRef(null);
   // const quillInstance = useRef(null);
@@ -122,14 +195,22 @@ const WritePage = (props) => {
             onChange={onChangeTitle}
             placeholder="제목을 입력하세요"
           />
-          <ReactQuill
-            // ref={quillElement}
-            modules={modules}
-            formats={formats}
-            placeholder={"내용 입력"}
-            style={{ width: "500px", height: "300px", border: "1px solid red" }}
-            onChange={onChangevalue}
-          />
+          {!!ReactQuill && isOpen && (
+            // <ReactQuill />
+            <ReactQuill
+              // ref={quillElement}
+              modules={modules}
+              formats={formats}
+              placeholder={"내용 입력"}
+              style={{
+                width: "500px",
+                height: "300px",
+                border: "1px solid red",
+              }}
+              onChange={onChangevalue}
+            />
+          )}
+
           <div style={{ marginTop: "80px" }}>
             <label>
               <span>해쉬태크</span>

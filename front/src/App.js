@@ -1,8 +1,7 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./component/Header";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Loginpage from "./pages/Loginpage";
 import Signuppage from "./pages/Signuppage";
@@ -13,7 +12,7 @@ import DetailPage from "./pages/DetailPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <div>
       <Header />
 
       <Route path="/" component={Main} exact />
@@ -23,7 +22,7 @@ function App() {
       <Route path="/detail" component={DetailPage} />
       <Route path="/personal/:nickname" component={Personalpage} />
       <Route path="/subscribe" component={Subscribe} />
-    </BrowserRouter>
+    </div>
   );
 }
 
