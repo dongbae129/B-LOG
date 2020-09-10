@@ -17,7 +17,7 @@ const enhancer =
   process.env.NODE_ENV === "production"
     ? compose(applyMiddleware(...middleware))
     : composeWithDevTools(applyMiddleware(...middleware));
-const store = createStore(rootReducer, enhancer);
+const store = createStore(rootReducer, window.__PRELOADED_STATE__, enhancer);
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(

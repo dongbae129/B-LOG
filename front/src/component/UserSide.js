@@ -6,6 +6,7 @@ import { GET_USER_INFO_REQUEST, LOG_IN_REQUEST } from "../reducers/user";
 import { Link } from "react-router-dom";
 import SubscribeList from "./SubscribeList";
 import { onClickLogout } from "./Header";
+import { usePreloader } from "../lib/PreloadContext";
 
 const UserSide = () => {
   const [checkUserList, setCheckUserList] = useState(false);
@@ -14,6 +15,11 @@ const UserSide = () => {
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  usePreloader(() => {
+    dispatch({
+      type: GET_USER_INFO_REQUEST,
+    });
+  });
   useEffect(() => {
     dispatch({
       type: GET_USER_INFO_REQUEST,

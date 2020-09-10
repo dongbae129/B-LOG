@@ -24,7 +24,12 @@ const ContentInfo = ({ props }) => {
         props.Hashtags.map((v, i) => <span key={v + i}>#{v.hashtag}</span>)}
       <br />
 
-      <Link to={{ pathname: "/detail", state: props }}>
+      <Link
+        to={{
+          pathname: `/detail/${props.User.id}/${props.id}`,
+          state: props,
+        }}
+      >
         {/* <div dangerouslySetInnerHTML={{ __html: props.description }}></div> */}
         <span>{ht.length > 200 ? `${ht.slice(0, 200)}...` : ht}</span>
       </Link>

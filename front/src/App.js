@@ -19,7 +19,7 @@ function App() {
       <Route path="/login" component={Loginpage} />
       <Route path="/signup" component={Signuppage} />
       <Route path="/write" component={WritePage} />
-      <Route path="/detail" component={DetailPage} />
+      <Route path="/detail/:userId/:postId" component={DetailPage} />
       <Route path="/personal/:nickname" component={Personalpage} />
       <Route path="/subscribe" component={Subscribe} />
     </div>

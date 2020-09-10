@@ -67,7 +67,11 @@ function* watchUploadPost() {
 
 function getPostsAPI(data) {
   return axios.get(
-    data ? `/post/${data.userId}?count=${data.count}&limit=9` : "/post"
+    data
+      ? data.postId
+        ? `/post/${data.userId}/${data.postId}`
+        : `/post/${data.userId}?count=${data.count}&limit=9`
+      : "/post"
   );
 }
 function* getPosts(action) {

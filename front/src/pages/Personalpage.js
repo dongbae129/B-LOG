@@ -10,6 +10,7 @@ import "../css/personal.css";
 import ContentDiv from "../component/Content_div";
 
 import { ht } from "../component/Content_div";
+import { usePreloader } from "../lib/PreloadContext";
 const Personalpage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
   const { login, user } = useSelector((state) => state.user);
@@ -49,6 +50,16 @@ const Personalpage = (props) => {
 
   const dispatch = useDispatch();
   const nick = nickname.slice(1);
+  usePreloader(() => {
+    dispatch({
+      type: GET_POSTS_REQUEST,
+      data: { userId, count: 0 },
+    });
+
+    dispatch({
+      type: GET_USER_INFO_REQUEST,
+    });
+  });
   useEffect(() => {
     dispatch({
       type: GET_POSTS_REQUEST,

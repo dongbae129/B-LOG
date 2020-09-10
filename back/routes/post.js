@@ -4,6 +4,8 @@ const router = express.Router();
 
 const path = require("path");
 const multer = require("multer");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const { isLoggedIn } = require("./middleware");
 
 const storage = multer.diskStorage({
@@ -45,7 +47,36 @@ router.get("/", async (req, res) => {
     console.error(e);
   }
 });
-
+router.get("/:userId/:postId", async (req, res) => {
+  try {
+    console.log(req.params.userId, req.params.postId, " Find");
+    const post = await db.Post.findOne({
+      where: {
+        [Op.and]: [
+          { UserId: parseInt(req.params.userId, 10) },
+          { id: parseInt(req.params.postId, 10) },
+        ],
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["nickname", "userId"],
+        },
+        {
+          model: db.PostCount,
+          attributes: ["hit"],
+        },
+        {
+          model: db.Hashtag,
+          attributes: ["hashtag"],
+        },
+      ],
+    });
+    res.json(post);
+  } catch (e) {
+    console.error(e);
+  }
+});
 router.get("/:userId", async (req, res) => {
   try {
     console.log(req.query, "$$$$");

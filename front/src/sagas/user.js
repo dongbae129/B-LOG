@@ -82,7 +82,6 @@ function* getUserInfo(action) {
       user: !action.data,
     });
   } catch (e) {
-    console.error(e, "@@");
     yield put({
       type: GET_USER_INFO_FAILURE,
     });

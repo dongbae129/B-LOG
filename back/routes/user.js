@@ -32,8 +32,7 @@ router.get("/", isLoggedIn, async (req, res) => {
         [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
       },
     });
-    console.log(req.user.toJSON(), "**");
-    console.log(subscribe, "&&");
+
     const user = { subscribe, ...req.user.toJSON() };
     // const user = Object.assign({}, req.user.toJSON());
     // delete user.password;
