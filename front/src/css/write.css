@@ -1,9 +1,29 @@
-.ql-editor {
-  padding: 0;
-  min-height: 320px;
-  font-size: 1.125rem;
-  line-height: 1.5;
+.write-container {
+  width: 900px;
+  margin: 0 auto;
 }
-.ql-editor.ql-blank::before {
-  left: 0px;
+.write-input {
+  display: block;
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 15px;
+  width: 99%;
+  line-height: 1.8rem;
+  font-size: 20px;
+  margin: 0 auto;
+}
+.write-button {
+  width: 80px;
+  height: 25px;
+  font-size: 15px;
+  background-color: #fff4e6;
+  color: #495057;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 800;
+  margin-top: 10px;
+}
+.write-input:focus {
+  outline: none;
 }

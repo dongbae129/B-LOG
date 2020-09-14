@@ -20,7 +20,7 @@ function App() {
       <Route path="/signup" component={Signuppage} />
       <Route path="/write" component={WritePage} />
       <Route path="/detail/:userId/:postId" component={DetailPage} />
-      <Route path="/personal/:nickname" component={Personalpage} />
+      <Route path="/personal/:userId" component={Personalpage} />
       <Route path="/subscribe" component={Subscribe} />
     </div>
   );

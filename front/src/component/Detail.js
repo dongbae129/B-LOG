@@ -20,7 +20,10 @@ const Detail = ({ props }) => {
             <ContentInfo props={props} />
           </ContentSmallDiv>
           <div className="content-image">
-            <img src={`http://localhost:8020/${props.Images[0].src}`} alt="" />
+            <img
+              src={`http://211.193.71.154:8020/${props.Images[0].src}`}
+              alt=""
+            />
           </div>
         </>
       ) : (

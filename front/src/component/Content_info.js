@@ -12,7 +12,7 @@ const ContentInfo = ({ props }) => {
       <h2>{props.title}</h2>
       <Link
         to={{
-          pathname: `/personal/:${props.User.nickname}`,
+          pathname: `/personal/${props.User.userId}`,
           state: { user: props.User },
         }}
       >

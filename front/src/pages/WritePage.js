@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 // import { ImageResize } from "quill-image-resize-module";
 import "../css/quill.snow.css";
+import "../css/write.css";
 import { UPLOAD_POST_REQUEST } from "../reducers/post";
 import { useEffect } from "react";
 
@@ -188,38 +189,41 @@ const WritePage = (props) => {
   return (
     <div className="write-container">
       <form>
-        <div style={{ border: "1px solid black" }}>
+        <div>
           <input
             type="text"
             value={title}
+            className="write-input"
             onChange={onChangeTitle}
             placeholder="제목을 입력하세요"
           />
           {!!ReactQuill && isOpen && (
-            // <ReactQuill />
             <ReactQuill
-              // ref={quillElement}
               modules={modules}
               formats={formats}
               placeholder={"내용 입력"}
               style={{
-                width: "500px",
-                height: "300px",
-                border: "1px solid red",
+                height: "550px",
+                marginTop: "20px",
+                paddingBottom: "55px",
               }}
               onChange={onChangevalue}
             />
           )}
-
-          <div style={{ marginTop: "80px" }}>
+        </div>
+        <div>
+          <div>
             <label>
-              <span>해쉬태크</span>
+              <span style={{ marginRight: "10px" }}>해쉬태크</span>
               <input type="text" value={hashtag} onChange={onChangeHashtag} />
             </label>
           </div>
+
+          <button className="write-button" onClick={onSubmitForm}>
+            작성
+          </button>
         </div>
       </form>
-      <button onClick={onSubmitForm}>작성</button>
     </div>
   );
 };

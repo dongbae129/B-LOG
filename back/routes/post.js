@@ -49,7 +49,6 @@ router.get("/", async (req, res) => {
 });
 router.get("/:userId/:postId", async (req, res) => {
   try {
-    console.log(req.params.userId, req.params.postId, " Find");
     const post = await db.Post.findOne({
       where: {
         [Op.and]: [
@@ -79,19 +78,14 @@ router.get("/:userId/:postId", async (req, res) => {
 });
 router.get("/:userId", async (req, res) => {
   try {
-    console.log(req.query, "$$$$");
     const user = await db.User.findOne({
       where: { userId: req.params.userId },
-      attributes: ["id"],
+      attributes: ["id", "userId", "nickname"],
     });
     const id = user.toJSON().id;
     const posts = await db.Post.findAll({
       where: { UserId: id },
       include: [
-        {
-          model: db.User,
-          attributes: ["nickname"],
-        },
         {
           model: db.Image,
           attributes: ["src"],
@@ -111,12 +105,11 @@ router.get("/:userId", async (req, res) => {
       where: { UserId: id },
     });
 
-    const fullPosts = Object.assign({}, { posts, pageCount: count });
+    const fullPosts = Object.assign({}, { posts, user, pageCount: count });
 
     // const count = await db.Post.count({
     //   where: { UserId: id },
     // });
-    // console.log(count, " CCCCCCCCCCCCCCCCC");
 
     res.json(fullPosts);
   } catch (e) {
@@ -126,7 +119,6 @@ router.get("/:userId", async (req, res) => {
 
 router.post("/", isLoggedIn, upload.none(), async (req, res) => {
   try {
-    console.log(req.body, "*********");
     const newPost = await db.Post.create({
       title: req.body.title,
       description: req.body.description,

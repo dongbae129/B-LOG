@@ -14,19 +14,16 @@ import { usePreloader } from "../lib/PreloadContext";
 const Personalpage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
   const { login, user } = useSelector((state) => state.user);
-  const { nickname } = props.match.params;
-  const { userId } = props.location.state.user;
+  const { userId } = props.match.params;
 
   const onClickPaging = (e) => {
     dispatch({
       type: GET_POSTS_REQUEST,
       data: { userId, count: e.target.innerHTML * 9 - 9 },
     });
-    console.log(e.target.innerHTML);
   };
 
   let fullCount = Math.ceil(mainPost.pageCount / 9) | 0;
-  console.log(fullCount, "!!!");
   const findPost_count = useCallback(() => {
     let hitarr = [];
     let finalarr = [];
@@ -49,7 +46,7 @@ const Personalpage = (props) => {
   findPost_count();
 
   const dispatch = useDispatch();
-  const nick = nickname.slice(1);
+  const nick = mainPost.user && mainPost.user.nickname;
   usePreloader(() => {
     dispatch({
       type: GET_POSTS_REQUEST,
@@ -90,7 +87,7 @@ const Personalpage = (props) => {
             <div>
               <strong>{nick}</strong>
               <br />
-              <span>({userId})</span>
+              <span>({mainPost.user && mainPost.user.userId})</span>
             </div>
             {user && user.userId === userId ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>

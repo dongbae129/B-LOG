@@ -4,21 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { SUBSCRIBE_USER_REQUEST } from "../reducers/user";
 import { PLUS_POST_COUNT_REQUEST, GET_POSTS_REQUEST } from "../reducers/post";
 import { usePreloader } from "../lib/PreloadContext";
-import { useState } from "react";
 
 const DetailPage = (props) => {
-  const [ss, setSS] = useState();
-  const { user } = useSelector((state) => state.user);
+  const { user, login } = useSelector((state) => state.user);
   const { mainPost } = useSelector((state) => state.post);
-  console.log(props, "!!!!");
 
-  // const { userId, nickname } = props.location.state.User;
-  // console.log(userId, "@");
   const dispatch = useDispatch();
-
-  // let aa = { title, createdAt, description, User, Hashtags, id, PostCount };
-  console.log(props.location.state);
-  console.log(ss, "%#@%");
 
   useEffect(() => {
     dispatch({
@@ -28,8 +19,6 @@ const DetailPage = (props) => {
         postId: props.match.params.postId,
       },
     });
-    console.log(props.location.state, " client");
-    setSS(props.location.state);
     // dispatch({
     //   type: PLUS_POST_COUNT_REQUEST,
     //   data: id,
@@ -51,7 +40,6 @@ const DetailPage = (props) => {
         postId: props.match.params.postId,
       },
     });
-    console.log("SSSSSSSSSSSSSSSSSSS Page");
   });
   useEffect(() => {
     dispatch({
@@ -60,6 +48,10 @@ const DetailPage = (props) => {
     });
   }, [dispatch, mainPost.id]);
   const onClickSubscirbe = () => {
+    if (!login) {
+      alert("로그인 해주세요!!");
+      return;
+    }
     dispatch({
       type: SUBSCRIBE_USER_REQUEST,
       data: mainPost.UserId,

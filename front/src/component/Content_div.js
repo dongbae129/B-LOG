@@ -11,8 +11,10 @@ const ContentDiv = ({ info }) => {
     <div className="content_div_wrap">
       {Images[0] ? (
         <>
-          <Link to={{ pathname: "/detail", state: info }}>
-            <img src={`http://localhost:8020/${Images[0].src}`} alt="" />
+          <Link
+            to={{ pathname: `/detail/${info.UserId}/${info.id}`, state: info }}
+          >
+            <img src={`http://211.193.71.154:8020/${Images[0].src}`} alt="" />
 
             <div>
               {title}{" "}
@@ -27,7 +29,9 @@ const ContentDiv = ({ info }) => {
         </>
       ) : (
         <div>
-          <Link to={{ pathname: "/detail", state: info }}>
+          <Link
+            to={{ pathname: `/detail/${info.UserId}/${info.id}`, state: info }}
+          >
             {title}{" "}
             <div>
               {ht(description).length > 150

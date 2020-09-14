@@ -97,7 +97,7 @@ const UserSide = () => {
                   <div className="menu_my_blog gomy pointer">
                     <Link
                       to={{
-                        pathname: `/personal/:${user.nickname}`,
+                        pathname: `/personal/${user.userId}`,
                         state: { user },
                       }}
                     >

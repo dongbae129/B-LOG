@@ -82,8 +82,7 @@ router.post("/login", (req, res, next) => {
           [Op.and]: [{ UserId: req.user.userId }, { checked: false }],
         },
       });
-      const fullUser = { subscribe, ...user.toJSON() };
-      // console.log(fullUser, "(()()()");
+      // const fullUser = { subscribe, ...user.toJSON() };
       return res.json(user);
     });
   })(req, res, next);
@@ -97,8 +96,6 @@ router.post("/logout", isLoggedIn, (req, res) => {
 
 router.post("/subscribe", isLoggedIn, async (req, res) => {
   try {
-    console.log(req.query, "**");
-    console.log(req.user, "^^");
     const subscribe = await db.Subscribe.create({
       UserId: req.user.id,
       userNickname: req.user.nickname,
@@ -113,7 +110,6 @@ router.post("/subscribe", isLoggedIn, async (req, res) => {
 
 router.post("/acceptSubscribe", isLoggedIn, async (req, res) => {
   try {
-    console.log(req.query, "((())");
     const acceptSubs = await db.Subscribe.update(
       { checked: true },
       {

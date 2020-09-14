@@ -9,7 +9,6 @@ const Content = () => {
   const { mainPost } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
-  // console.log(mainPost, " !!!");
   usePreloader(() => {
     let date = new Date();
     dispatch({
