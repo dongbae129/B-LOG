@@ -9,16 +9,21 @@ import { Redirect } from "react-router-dom";
 const Loginpage = (props) => {
   const [idlabel, setIdLabel] = useState(false);
   const [passlabel, setPassLabel] = useState(false);
+  const [loginState, setLoginState] = useState(false);
   const [id, onChangeId] = useInput("");
   const [password, onChangePassw] = useInput("");
 
-  const { user } = useSelector((state) => state.user);
+  const { user, loginSuccess } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
   const submitForm = useCallback(
     (e) => {
       e.preventDefault();
+      if (!id || !password) {
+        alert("아이디 또는 비밀번호를 입력해주세요");
+        return;
+      }
       dispatch({
         type: LOG_IN_REQUEST,
         data: { id, password },

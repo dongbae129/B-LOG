@@ -20,6 +20,9 @@ import {
   ACCEPT_SUBSCRIBE_USER_SUCCESSS,
   ACCEPT_SUBSCRIBE_USER_FAILURE,
   ACCEPT_SUBSCRIBE_USER_REQUEST,
+  UNACCEPTSUBS_USER_SUCCESSS,
+  UNACCEPTSUBS_USER_FAILURE,
+  UNACCEPTSUBS_USER_REQUEST,
 } from "../reducers/user";
 
 function signupAPI(data) {
@@ -27,11 +30,11 @@ function signupAPI(data) {
 }
 function* signup(action) {
   try {
-    console.log(action.data, "@");
     yield call(signupAPI, action.data);
     yield put({
       type: SIGN_UP_SUCCESSS,
     });
+    action.push("/");
   } catch (e) {
     console.error(e);
     yield put({
@@ -61,6 +64,7 @@ function* logIn(action) {
     yield put({
       type: LOG_IN_FAILURE,
     });
+    alert("아이디 또는 비밀번호가 틀립니다.!!");
   }
 }
 
@@ -68,8 +72,8 @@ function* watchLogin() {
   yield takeEvery(LOG_IN_REQUEST, logIn);
 }
 
-function getUserInfoAPI(data) {
-  return axios.get("/user", {
+function getUserInfoAPI(userId) {
+  return axios.get(`/user?userId=${userId}`, {
     withCredentials: true,
   });
 }
@@ -148,7 +152,7 @@ function* watchSubscribe() {
 
 function acceptSubscribeAPI(userId) {
   return axios.post(
-    `/user/acceptSubscribe?id=${userId}`,
+    `/user/acceptSubscribe?userId=${userId}`,
     {},
     {
       withCredentials: true,
@@ -157,9 +161,10 @@ function acceptSubscribeAPI(userId) {
 }
 function* acceptSubscribe(action) {
   try {
-    yield call(acceptSubscribeAPI, action.data);
+    const result = yield call(acceptSubscribeAPI, action.data);
     yield put({
       type: ACCEPT_SUBSCRIBE_USER_SUCCESSS,
+      data: result.data,
     });
   } catch (e) {
     console.error(e, "##");
@@ -173,6 +178,31 @@ function* watchAcceptSubscribe() {
   yield takeEvery(ACCEPT_SUBSCRIBE_USER_REQUEST, acceptSubscribe);
 }
 
+function unAcceptSubscAPI(userId) {
+  return axios.get(`/user/unacceptsubs?userId=${userId}`, {
+    withCredentials: true,
+  });
+}
+function* unAcceptSubsc(action) {
+  try {
+    const result = yield call(unAcceptSubscAPI, action.data);
+    console.log(result.data, "()()(");
+    yield put({
+      type: UNACCEPTSUBS_USER_SUCCESSS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e, "##");
+    yield put({
+      type: UNACCEPTSUBS_USER_FAILURE,
+    });
+  }
+}
+
+function* watchUnAcceptSubs() {
+  yield takeEvery(UNACCEPTSUBS_USER_REQUEST, unAcceptSubsc);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignup),
@@ -181,5 +211,6 @@ export default function* userSaga() {
     fork(watchLogout),
     fork(watchSubscribe),
     fork(watchAcceptSubscribe),
+    fork(watchUnAcceptSubs),
   ]);
 }

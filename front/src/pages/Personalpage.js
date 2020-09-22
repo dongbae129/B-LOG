@@ -16,6 +16,10 @@ const Personalpage = (props) => {
   const { login, user } = useSelector((state) => state.user);
   const { userId } = props.match.params;
 
+  let subsArr = [];
+  if (user && user.subscribe) {
+    user.subscribe.map((v) => subsArr.push(v.userNickname));
+  }
   const onClickPaging = (e) => {
     dispatch({
       type: GET_POSTS_REQUEST,
@@ -65,6 +69,7 @@ const Personalpage = (props) => {
 
     dispatch({
       type: GET_USER_INFO_REQUEST,
+      data: userId,
     });
   }, [dispatch, userId]);
 
@@ -89,7 +94,9 @@ const Personalpage = (props) => {
               <br />
               <span>({mainPost.user && mainPost.user.userId})</span>
             </div>
-            {user && user.userId === userId ? null : (
+            {subsArr.includes(nick) ||
+            (user && user.userId === userId) ||
+            (user && user.toSubscribe) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
                 <span>+</span> 이웃추가
               </div>

@@ -12,25 +12,23 @@ export const useInput = (initialValue = null) => {
   return [value, handler];
 };
 
-const Signuppage = () => {
+const Signuppage = (props) => {
   // const [passwCheck, setPasswCheck] = useState();
   const [passwCheckError, setPasswCheckError] = useState(false);
   const [passCheck, setPassCheck] = useState(false);
-  const [passErrorCheck, setPassErrorCheck] = useState(false);
   const [nickCheck, setNickCheck] = useState(false);
   const [idCheck, setIdCheck] = useState(false);
+  const [submitPassCheck, setSubmitPassCheck] = useState(false);
   const [id, onChangeId] = useInput("");
   const [password, onChangePassw] = useInput("");
   const [nickname, onChangeNick] = useInput("");
-  // const [idCheck, setIdCheck] = blurInput();
 
   const dispatch = useDispatch();
 
   const onChangePasswCheck = useCallback(
     (e) => {
       setPasswCheckError(e.target.value !== password);
-      setPassErrorCheck(e.target.value !== password);
-      // setPasswCheck(e.target.value)
+      setSubmitPassCheck(e.target.value === password);
     },
     [password]
   );
@@ -38,7 +36,15 @@ const Signuppage = () => {
   const onClickForm = useCallback(
     (e) => {
       e.preventDefault();
-
+      console.log(submitPassCheck);
+      if (password && passwCheckError) {
+        alert("비밀번호 중복 확인을 해주세요");
+        return;
+      }
+      if (!id || !password || !nickname || !submitPassCheck) {
+        alert("다 채우세요");
+        return;
+      }
       dispatch({
         type: SIGN_UP_REQUEST,
         data: {
@@ -46,9 +52,18 @@ const Signuppage = () => {
           password,
           nickname,
         },
+        push: props.history.push,
       });
     },
-    [dispatch, id, nickname, password]
+    [
+      submitPassCheck,
+      password,
+      passwCheckError,
+      id,
+      nickname,
+      dispatch,
+      props.history.push,
+    ]
   );
   const onContentBlur = (setter) => (e) => {
     if (e.target.value === "") {
@@ -97,9 +112,9 @@ const Signuppage = () => {
             type="password"
             onChange={onChangePasswCheck}
             required
-            onBlur={onContentBlur(setPassErrorCheck)}
+            // onBlur={onContentBlur(setPassErrorCheck)}
           />
-          {passErrorCheck && <p>비밀번호 재확인을 해주세요</p>}
+
           {passwCheckError && <p>비밀번호가 일치하지 않습니다</p>}
         </div>
         <button type="submit" onClick={onClickForm}>

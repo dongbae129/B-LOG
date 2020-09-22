@@ -29,11 +29,21 @@ router.get("/", isLoggedIn, async (req, res) => {
   try {
     const subscribe = await db.Subscribe.findAll({
       where: {
-        [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+        [Op.and]: [{ toUserId: req.user.userId }, { checked: true }],
       },
     });
-
-    const user = { subscribe, ...req.user.toJSON() };
+    console.log(req.user.userId, req.query.userId, "##");
+    const toSubscribe = await db.Subscribe.findOne({
+      where: {
+        [Op.and]: [
+          { UserId: req.user.id },
+          { toUserId: req.query.userId },
+          { checked: true },
+        ],
+      },
+    });
+    console.log(JSON.stringify(toSubscribe), "&&");
+    const user = { subscribe, toSubscribe, ...req.user.toJSON() };
     // const user = Object.assign({}, req.user.toJSON());
     // delete user.password;
     return res.json(user);
@@ -79,11 +89,11 @@ router.post("/login", (req, res, next) => {
       // delete filteredUser.password;
       const subscribe = await db.Subscribe.findAll({
         where: {
-          [Op.and]: [{ UserId: req.user.userId }, { checked: false }],
+          [Op.and]: [{ toUserId: req.user.userId }, { checked: true }],
         },
       });
-      // const fullUser = { subscribe, ...user.toJSON() };
-      return res.json(user);
+      const fullUser = { subscribe, ...user.toJSON() };
+      return res.json(fullUser);
     });
   })(req, res, next);
 });
@@ -107,18 +117,40 @@ router.post("/subscribe", isLoggedIn, async (req, res) => {
     console.error(e);
   }
 });
+router.get("/unacceptsubs", isLoggedIn, async (req, res) => {
+  try {
+    const subscirbeList = await db.Subscribe.findAll({
+      where: {
+        [Op.and]: [{ toUserId: req.query.userId }, { checked: false }],
+      },
+    });
+    console.log(JSON.stringify(subscirbeList), "**");
+    res.json(subscirbeList);
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 router.post("/acceptSubscribe", isLoggedIn, async (req, res) => {
   try {
-    const acceptSubs = await db.Subscribe.update(
+    await db.Subscribe.update(
       { checked: true },
       {
         where: {
-          [Op.and]: [{ toUserId: req.user.userId }, { UserId: req.query.id }],
+          [Op.and]: [
+            { toUserId: req.user.userId },
+            { UserId: parseInt(req.query.userId, 10) },
+          ],
         },
       }
     );
-    res.json(acceptSubs);
+    const subscirbeList = await db.Subscribe.findAll({
+      where: {
+        [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+      },
+    });
+
+    res.json(subscirbeList);
   } catch (e) {
     console.error(e);
   }

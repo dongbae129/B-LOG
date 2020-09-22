@@ -39,6 +39,10 @@ const UserSide = () => {
   };
   const onSubmitLogin = (e) => {
     e.preventDefault();
+    if (!id || !password) {
+      alert("아이디 또는 비밀번호를 입력해주세요");
+      return;
+    }
     dispatch(
       {
         type: LOG_IN_REQUEST,
@@ -116,11 +120,18 @@ const UserSide = () => {
                   >
                     이웃목록
                   </div>
+
+                  <div className="neighboralarm pointer">
+                    <Link to={`/subscribeList/${user.userId}`}>이웃알림</Link>
+                  </div>
+                </div>
+                <div className="neighborsearch">
                   <input type="text" />
                   <div className="search">
                     <img src="/images/search.png" alt="" />
                   </div>
                 </div>
+
                 {checkUserList && (
                   <div>
                     <SubscribeList st={user} />

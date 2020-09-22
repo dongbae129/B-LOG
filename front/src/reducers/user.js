@@ -2,7 +2,9 @@ export const initialState = {
   user: null,
   signedup: false,
   subscribe: [],
+  unacceptSubs: [],
   login: false,
+  loginSuccess: false,
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -25,6 +27,10 @@ export const SUBSCRIBE_USER_REQUEST = "SUBSCRIBE_USER_REQUEST";
 export const SUBSCRIBE_USER_SUCCESSS = "SUBSCRIBE_USER_SUCCESSS";
 export const SUBSCRIBE_USER_FAILURE = "SUBSCRIBE_USER_FAILURE";
 
+export const UNACCEPTSUBS_USER_REQUEST = "UNACCEPTSUBS_USER_REQUEST";
+export const UNACCEPTSUBS_USER_SUCCESSS = "UNACCEPTSUBS_USER_SUCCESSS";
+export const UNACCEPTSUBS_USER_FAILURE = "UNACCEPTSUBS_USER_FAILURE";
+
 export const ACCEPT_SUBSCRIBE_USER_REQUEST = "ACCEPT_SUBSCRIBE_USER_REQUEST";
 export const ACCEPT_SUBSCRIBE_USER_SUCCESSS = "ACCEPT_SUBSCRIBE_USER_SUCCESSS";
 export const ACCEPT_SUBSCRIBE_USER_FAILURE = "ACCEPT_SUBSCRIBE_USER_FAILURE";
@@ -32,7 +38,6 @@ export const ACCEPT_SUBSCRIBE_USER_FAILURE = "ACCEPT_SUBSCRIBE_USER_FAILURE";
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_INFO_REQUEST:
-    case LOG_IN_FAILURE:
     case LOG_IN_REQUEST: {
       return {
         ...state,
@@ -58,6 +63,20 @@ export default (state = initialState, action) => {
         ...state,
         user: action.data,
         login: true,
+        loginSuccess: false,
+      };
+    }
+    case LOG_IN_FAILURE: {
+      return {
+        ...state,
+        loginSuccess: true,
+      };
+    }
+    case ACCEPT_SUBSCRIBE_USER_SUCCESSS:
+    case UNACCEPTSUBS_USER_SUCCESSS: {
+      return {
+        ...state,
+        unacceptSubs: action.data,
       };
     }
 

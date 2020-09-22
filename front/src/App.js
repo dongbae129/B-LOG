@@ -9,6 +9,7 @@ import WritePage from "./pages/WritePage";
 import Personalpage from "./pages/Personalpage";
 import Subscribe from "./pages/Subscribe";
 import DetailPage from "./pages/DetailPage";
+import UnSubscribeList from "./component/UnSubscribeList";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/detail/:userId/:postId" component={DetailPage} />
       <Route path="/personal/:userId" component={Personalpage} />
       <Route path="/subscribe" component={Subscribe} />
+      <Route path="/subscribeList/:userId" component={UnSubscribeList} />
     </div>
   );
 }

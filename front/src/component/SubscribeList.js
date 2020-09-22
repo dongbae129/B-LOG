@@ -2,13 +2,13 @@ import React from "react";
 
 const SubscribeList = ({ st }) => {
   const { subscribe } = st;
+  console.log(subscribe, "!!");
   return (
     <div
       style={{
         width: "80%",
         margin: "0 auto",
         marginTop: "10px",
-        borderTop: "1px solid #dee2e6",
       }}
     >
       {subscribe &&
