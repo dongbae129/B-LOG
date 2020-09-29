@@ -155,4 +155,19 @@ router.post("/acceptSubscribe", isLoggedIn, async (req, res) => {
     console.error(e);
   }
 });
+
+router.get("/joincheck", async (req, res) => {
+  try {
+    const checkUser = await db.User.findOne({
+      where: { userId: req.query.userId },
+    });
+    if (checkUser) {
+      res.send("NNNN");
+    } else {
+      res.send("NNNNY");
+    }
+  } catch (e) {
+    console.error(e);
+  }
+});
 module.exports = router;

@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOG_IN_REQUEST } from "../reducers/user";
 import "../css/login.css";
 import { Redirect } from "react-router-dom";
+import swal from "sweetalert";
 
 const Loginpage = (props) => {
   const [idlabel, setIdLabel] = useState(false);
   const [passlabel, setPassLabel] = useState(false);
-  const [loginState, setLoginState] = useState(false);
   const [id, onChangeId] = useInput("");
   const [password, onChangePassw] = useInput("");
 
-  const { user, loginSuccess } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const Loginpage = (props) => {
     (e) => {
       e.preventDefault();
       if (!id || !password) {
-        alert("아이디 또는 비밀번호를 입력해주세요");
+        swal("아이디, 비밀번호 입력해주세요", "", "error");
         return;
       }
       dispatch({

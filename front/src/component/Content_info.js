@@ -4,8 +4,9 @@ import sanitize from "sanitize-html";
 
 const ContentInfo = ({ props }) => {
   const ht = sanitize(props.description, {
-    allowedTags: ["b", "i", "em", "strong", "a"],
+    allowedTags: ["b", "i", "a"],
   });
+  // console.log(props, "$$");
 
   return (
     <div>
@@ -31,6 +32,7 @@ const ContentInfo = ({ props }) => {
         }}
       >
         {/* <div dangerouslySetInnerHTML={{ __html: props.description }}></div> */}
+        {/* <span>{props.description.length > 200 ? `${props.description.slice(0, 200)}...` : props.description}</span> */}
         <span>{ht.length > 200 ? `${ht.slice(0, 200)}...` : ht}</span>
       </Link>
     </div>

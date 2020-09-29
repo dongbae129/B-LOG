@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import sanitize from "sanitize-html";
 export const ht = (data) =>
   sanitize(data, {
-    allowedTags: ["b", "i", "em", "strong", "a"],
+    allowedTags: ["b", "i", "a"],
   });
 const ContentDiv = ({ info }) => {
   const { title, description, Images, updatedAt } = info;

@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import "../css/detail.css";
 import { useDispatch, useSelector } from "react-redux";
-import { SUBSCRIBE_USER_REQUEST } from "../reducers/user";
+import {
+  GET_USER_INFO_REQUEST,
+  SUBSCRIBE_USER_REQUEST,
+} from "../reducers/user";
 import { PLUS_POST_COUNT_REQUEST, GET_POSTS_REQUEST } from "../reducers/post";
 import { usePreloader } from "../lib/PreloadContext";
 
 const DetailPage = (props) => {
   const { user, login } = useSelector((state) => state.user);
   const { mainPost } = useSelector((state) => state.post);
-
+  const { userId } = props.location.state.User;
+  console.log(props, "**");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,6 +34,11 @@ const DetailPage = (props) => {
     props.match.params.userId,
   ]);
 
+  let subsArr = [];
+  if (user && user.subscribe) {
+    user.subscribe.map((v) => subsArr.push(v.userNickname));
+  }
+
   const nick = mainPost && mainPost.User && mainPost.User.nickname.slice();
 
   usePreloader(() => {
@@ -46,7 +55,11 @@ const DetailPage = (props) => {
       type: PLUS_POST_COUNT_REQUEST,
       data: mainPost.id,
     });
-  }, [dispatch, mainPost.id]);
+    dispatch({
+      type: GET_USER_INFO_REQUEST,
+      data: userId,
+    });
+  }, [dispatch, mainPost.id, userId]);
   const onClickSubscirbe = () => {
     if (!login) {
       alert("로그인 해주세요!!");
@@ -68,7 +81,10 @@ const DetailPage = (props) => {
               <br />
               <span>({mainPost.User && mainPost.User.userId})</span>
             </div>
-            {user && user.userId === mainPost.userId ? null : (
+            {(user &&
+              user.userId === (mainPost.User && mainPost.User.userId)) ||
+            subsArr.includes(nick) ||
+            (user && user.toSubscribe) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
                 <span>+</span> 이웃추가
               </div>

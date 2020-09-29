@@ -15,6 +15,7 @@ const Personalpage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
   const { login, user } = useSelector((state) => state.user);
   const { userId } = props.match.params;
+  console.log(props, "@@");
 
   let subsArr = [];
   if (user && user.subscribe) {

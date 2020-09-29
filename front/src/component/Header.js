@@ -22,12 +22,13 @@ const Header = () => {
         <div className="button">
           {!login && (
             <>
-              <Link to="/login">
-                <button>로그인</button>
-              </Link>
-              <Link to="/signup">
-                <button>회원가입</button>
-              </Link>
+              <div className="header-btn">
+                <Link to="/login">로그인</Link>
+              </div>
+
+              <div className="header-btn">
+                <Link to="/signup">회원가입</Link>
+              </div>
             </>
           )}
         </div>

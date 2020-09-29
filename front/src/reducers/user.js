@@ -5,6 +5,8 @@ export const initialState = {
   unacceptSubs: [],
   login: false,
   loginSuccess: false,
+  checkUserId: null,
+  Test: null,
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -34,6 +36,10 @@ export const UNACCEPTSUBS_USER_FAILURE = "UNACCEPTSUBS_USER_FAILURE";
 export const ACCEPT_SUBSCRIBE_USER_REQUEST = "ACCEPT_SUBSCRIBE_USER_REQUEST";
 export const ACCEPT_SUBSCRIBE_USER_SUCCESSS = "ACCEPT_SUBSCRIBE_USER_SUCCESSS";
 export const ACCEPT_SUBSCRIBE_USER_FAILURE = "ACCEPT_SUBSCRIBE_USER_FAILURE";
+
+export const CHECK_USER_ID_REQUEST = "CHECK_USER_ID_REQUEST";
+export const CHECK_USER_ID_SUCCESSS = "CHECK_USER_ID_SUCCESSS";
+export const CHECK_USER_ID_FAILURE = "CHECK_USER_ID_FAILURE";
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -77,6 +83,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         unacceptSubs: action.data,
+      };
+    }
+    case CHECK_USER_ID_REQUEST: {
+      return {
+        ...state,
+        Test: "무ㅗ지",
+      };
+    }
+    case CHECK_USER_ID_SUCCESSS: {
+      return {
+        ...state,
+        checkUserId: action.data,
       };
     }
 

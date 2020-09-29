@@ -3,26 +3,36 @@ h1 {
 }
 .button {
   float: right;
+  display: flex;
   height: 100%;
   margin-right: 20px;
-  line-height: 85px;
+  /* line-height: 85px; */
+  margin-top: 30px;
 }
 .button a {
-  margin-right: 5px;
+  margin-top: 10px;
+  vertical-align: middle;
 }
-.button button {
+
+.button .header-btn {
+  margin-right: 5px;
   width: 80px;
-  height: 25px;
+  height: 30px;
   font-size: 15px;
   background-color: #edf2ff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 800;
+  text-align: center;
 }
-.button button:hover {
+.button .header-btn:hover {
+  background-color: #dbe4ff;
   box-shadow: 2px 2px 6px rgb(102, 102, 102);
 }
+/* .button button:active {
+  outline: none;
+} */
 .header {
   width: 1100px;
   margin: 0 auto;

@@ -1,4 +1,5 @@
 import { all, fork, call, put, takeEvery } from "redux-saga/effects";
+import swal from "sweetalert";
 
 import axios from "axios";
 import {
@@ -23,6 +24,9 @@ import {
   UNACCEPTSUBS_USER_SUCCESSS,
   UNACCEPTSUBS_USER_FAILURE,
   UNACCEPTSUBS_USER_REQUEST,
+  CHECK_USER_ID_REQUEST,
+  CHECK_USER_ID_SUCCESSS,
+  CHECK_USER_ID_FAILURE,
 } from "../reducers/user";
 
 function signupAPI(data) {
@@ -34,7 +38,7 @@ function* signup(action) {
     yield put({
       type: SIGN_UP_SUCCESSS,
     });
-    action.push("/");
+    action.push("/login");
   } catch (e) {
     console.error(e);
     yield put({
@@ -64,7 +68,9 @@ function* logIn(action) {
     yield put({
       type: LOG_IN_FAILURE,
     });
-    alert("아이디 또는 비밀번호가 틀립니다.!!");
+    swal("회원 정보가 일치하지 않습니다", "", "warning");
+
+    // alert("아이디 또는 비밀번호가 틀립니다.!!");
   }
 }
 
@@ -203,6 +209,34 @@ function* watchUnAcceptSubs() {
   yield takeEvery(UNACCEPTSUBS_USER_REQUEST, unAcceptSubsc);
 }
 
+function checkUserIdAPI(userId) {
+  console.log(userId, "%%");
+  return axios.get(`/user/joincheck?userId=${userId}`);
+}
+function* checkUserId(action) {
+  try {
+    console.log(action.data, "~~");
+    const result = yield call(checkUserIdAPI, action.data);
+    let data;
+    console.log(data, "1");
+    console.log(result.data, "**");
+    result.data === "NNNN" ? (data = true) : (data = false);
+    console.log(data, "2");
+    yield put({
+      type: CHECK_USER_ID_SUCCESSS,
+      data,
+    });
+  } catch (e) {
+    yield put({
+      type: CHECK_USER_ID_FAILURE,
+    });
+  }
+}
+
+function* watchCheckUserId() {
+  yield takeEvery(CHECK_USER_ID_REQUEST, checkUserId);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignup),
@@ -212,5 +246,6 @@ export default function* userSaga() {
     fork(watchSubscribe),
     fork(watchAcceptSubscribe),
     fork(watchUnAcceptSubs),
+    fork(watchCheckUserId),
   ]);
 }
