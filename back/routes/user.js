@@ -32,18 +32,48 @@ router.get("/", isLoggedIn, async (req, res) => {
         [Op.and]: [{ toUserId: req.user.userId }, { checked: true }],
       },
     });
-    console.log(req.user.userId, req.query.userId, "##");
-    const toSubscribe = await db.Subscribe.findOne({
+    const toSubsUser = await db.Subscribe.findAll({
+      where: {
+        [Op.and]: [{ UserId: req.user.id }, { checked: true }],
+      },
+    });
+    const notSubsUser = await db.Subscribe.findOne({
       where: {
         [Op.and]: [
-          { UserId: req.user.id },
-          { toUserId: req.query.userId },
-          { checked: true },
+          { toUserId: req.user.userId },
+          { fromUserId: req.query.userId },
+          { checked: false },
         ],
       },
     });
-    console.log(JSON.stringify(toSubscribe), "&&");
-    const user = { subscribe, toSubscribe, ...req.user.toJSON() };
+    const toSubscribe = await db.Subscribe.findOne({
+      where: {
+        [Op.or]: [
+          {
+            [Op.and]: [
+              { fromUserId: req.user.userId },
+              { toUserId: req.query.userId },
+              { checked: true },
+            ],
+          },
+          {
+            [Op.and]: [
+              { fromUserId: req.query.userId },
+              { toUserId: req.user.userId },
+              { checked: true },
+            ],
+          },
+        ],
+      },
+    });
+
+    const user = {
+      subscribe,
+      toSubscribe,
+      toSubsUser,
+      notSubsUser,
+      ...req.user.toJSON(),
+    };
     // const user = Object.assign({}, req.user.toJSON());
     // delete user.password;
     return res.json(user);
@@ -92,7 +122,12 @@ router.post("/login", (req, res, next) => {
           [Op.and]: [{ toUserId: req.user.userId }, { checked: true }],
         },
       });
-      const fullUser = { subscribe, ...user.toJSON() };
+      const toSubsUser = await db.Subscribe.findAll({
+        where: {
+          [Op.and]: [{ UserId: req.user.id }, { checked: true }],
+        },
+      });
+      const fullUser = { subscribe, toSubsUser, ...user.toJSON() };
       return res.json(fullUser);
     });
   })(req, res, next);
@@ -108,8 +143,10 @@ router.post("/subscribe", isLoggedIn, async (req, res) => {
   try {
     const subscribe = await db.Subscribe.create({
       UserId: req.user.id,
-      userNickname: req.user.nickname,
+      fromUserId: req.user.userId,
+      fromUserNickname: req.user.nickname,
       toUserId: req.query.id,
+      toUserNickname: req.query.nick,
       checked: false,
     });
     res.json(subscribe);

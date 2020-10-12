@@ -26,7 +26,6 @@ const Signuppage = (props) => {
   const [nicknameBlur, setNicknameBlur] = useState(false);
   const [passwordBlur, setPasswordBlur] = useState(false);
   const [checkPassBlur, setCheckPassBlur] = useState(false);
-  const [confirmUserId, setConfirmUserId] = useState(false);
   const [id, onChangeId] = useInput("");
   const [password, onChangePassw] = useInput("");
   const [nickname, onChangeNick] = useInput("");
@@ -87,7 +86,6 @@ const Signuppage = (props) => {
           type: CHECK_USER_ID_REQUEST,
           data: e.target.value,
         });
-        console.log("dispatch 했으,ㅁ");
       }
     }
     // e.target.id === "idlabel" &&
@@ -126,7 +124,7 @@ const Signuppage = (props) => {
           </label>
           {checkUserId === null ? null : checkUserId ? (
             <span className="error_box-red">
-              <p>이미 사용중이거나 탈퇴한 아이디입니다.</p>
+              <p>이미 사용중인 아이디 입니다.</p>
             </span>
           ) : (
             <span className="error_box-green">

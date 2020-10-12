@@ -129,9 +129,9 @@ function* watchLogout() {
   yield takeEvery(LOG_OUT_REQUEST, logOut);
 }
 
-function subsCribeAPI(userId) {
+function subsCribeAPI(data) {
   return axios.post(
-    `/user/subscribe?id=${userId}`,
+    `/user/subscribe?id=${data.userId}&nick=${data.userNickname}`,
     {},
     {
       withCredentials: true,

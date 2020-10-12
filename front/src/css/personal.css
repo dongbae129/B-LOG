@@ -109,6 +109,10 @@
   font-size: 20px;
   color: #38d9a9;
 }
+.btn_area.nosub {
+  background-color: #dee2e6;
+  opacity: 0.7;
+}
 .personal-pagingcount {
   display: flex;
   justify-content: center;

@@ -13,6 +13,7 @@ const DetailPage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
   const { userId } = props.location.state.User;
   console.log(props, "**");
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,7 +68,10 @@ const DetailPage = (props) => {
     }
     dispatch({
       type: SUBSCRIBE_USER_REQUEST,
-      data: mainPost.UserId,
+      data: {
+        userId: mainPost.User.userId,
+        userNickname: mainPost.User.nickname,
+      },
     });
   };
   return (
@@ -81,10 +85,14 @@ const DetailPage = (props) => {
               <br />
               <span>({mainPost.User && mainPost.User.userId})</span>
             </div>
-            {(user &&
-              user.userId === (mainPost.User && mainPost.User.userId)) ||
-            subsArr.includes(nick) ||
-            (user && user.toSubscribe) ? null : (
+            {user && user.notSubsUser ? (
+              <div className="btn_area nosub" disabled>
+                <span>+</span> 이웃 신청중
+              </div>
+            ) : (user &&
+                user.userId === (mainPost.User && mainPost.User.userId)) ||
+              subsArr.includes(nick) ||
+              (user && user.toSubscribe) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
                 <span>+</span> 이웃추가
               </div>

@@ -1,4 +1,4 @@
-import { all, fork, call, put, takeEvery } from "redux-saga/effects";
+import { all, fork, call, put, takeEvery, throttle } from "redux-saga/effects";
 import axios from "axios";
 
 import {
@@ -65,18 +65,21 @@ function* watchUploadPost() {
   yield takeEvery(UPLOAD_POST_REQUEST, uploadPost);
 }
 
-function getPostsAPI(data) {
+function getPostsAPI(data, lastId = 0, limit = 8) {
+  console.log(lastId, "^&^&^&");
   return axios.get(
     data
       ? data.postId
         ? `/post/${data.userId}/${data.postId}`
         : `/post/${data.userId}?count=${data.count}&limit=9`
-      : "/post"
+      : `/post?lastId=${lastId}&limit=${limit}`
   );
 }
 function* getPosts(action) {
   try {
-    const result = yield call(getPostsAPI, action.data);
+    console.log(action.data, action.lastId, " &*&*");
+    const result = yield call(getPostsAPI, action.data, action.lastId);
+    console.log(result.data.length, "&*&*&*");
     yield put({
       type: GET_POSTS_SUCCESS,
       data: result.data,
@@ -89,7 +92,7 @@ function* getPosts(action) {
   }
 }
 function* watchGetPosts() {
-  yield takeEvery(GET_POSTS_REQUEST, getPosts);
+  yield throttle(2000, GET_POSTS_REQUEST, getPosts);
 }
 
 function PostCountAPI(postId) {

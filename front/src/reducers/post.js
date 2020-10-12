@@ -1,6 +1,7 @@
 export const initialState = {
   mainPost: [],
   imagePaths: [],
+  // hasMorePost: false,
 };
 
 export const UPLOAD_POST_REQUEST = "UPLOAD_POST_REQUEST";
@@ -25,18 +26,30 @@ export const PLUS_POST_COUNT_FAILURE = "PLUS_POST_COUNT_FAILURE";
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case GET_POSTS_REQUEST: {
+      return {
+        ...state,
+        mainPost: action.lastId === 0 ? [] : state.mainPost,
+        hasMorePost: action.lastId ? state.hasMorePost : true,
+      };
+    }
     case UPLOAD_POST_REQUEST:
-    case GET_POSTS_REQUEST:
     case UPLOAD_POST_FAILURE: {
       return {
         ...state,
       };
     }
     case GET_USER_POSTS_SUCCESSS:
-    case GET_POSTS_SUCCESS: {
       return {
         ...state,
         mainPost: action.data,
+      };
+    case GET_POSTS_SUCCESS: {
+      console.log(action.data.length, "@@@@");
+      return {
+        ...state,
+        mainPost: state.mainPost.concat(action.data),
+        hasMorePost: action.data.length === 10,
       };
     }
     case UPLOAD_IMAGE_SUCCESS: {

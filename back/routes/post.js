@@ -22,7 +22,17 @@ const upload = multer({ storage: storage, fileSize: 20 * 1024 * 1024 });
 
 router.get("/", async (req, res) => {
   try {
+    console.log(req.query.lastId, req.query.limit, "&&");
+    let where = {};
+    if (parseInt(req.query.lastId, 10)) {
+      where = {
+        id: {
+          [Op.lt]: parseInt(req.query.lastId, 10), // less than
+        },
+      };
+    }
     const posts = await db.Post.findAll({
+      where,
       include: [
         {
           model: db.User,
@@ -40,6 +50,7 @@ router.get("/", async (req, res) => {
           model: db.PostCount,
         },
       ],
+      limit: 10,
       order: [["createdAt", "DESC"]],
     });
     res.json(posts);

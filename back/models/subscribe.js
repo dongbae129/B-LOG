@@ -2,11 +2,19 @@ module.exports = (sequelize, DataTypes) => {
   const Subscribe = sequelize.define(
     "Subscribe",
     {
-      userNickname: {
+      fromUserNickname: {
+        type: DataTypes.STRING(),
+        allowNull: false,
+      },
+      fromUserId: {
         type: DataTypes.STRING(),
         allowNull: false,
       },
       toUserId: {
+        type: DataTypes.STRING(),
+        allowNull: false,
+      },
+      toUserNickname: {
         type: DataTypes.STRING(),
         allowNull: false,
       },

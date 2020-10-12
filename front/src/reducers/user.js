@@ -49,11 +49,24 @@ export default (state = initialState, action) => {
         ...state,
       };
     }
+    case SIGN_UP_SUCCESSS: {
+      return {
+        ...state,
+        checkUserId: null,
+      };
+    }
     case GET_USER_INFO_SUCCESSS: {
       return {
         ...state,
         user: action.data,
         login: true,
+        checkUserId: null,
+      };
+    }
+    case GET_USER_INFO_FAILURE: {
+      return {
+        ...state,
+        checkUserId: null,
       };
     }
     case LOG_OUT_SUCCESSS: {
@@ -70,6 +83,7 @@ export default (state = initialState, action) => {
         user: action.data,
         login: true,
         loginSuccess: false,
+        checkUserId: null,
       };
     }
     case LOG_IN_FAILURE: {

@@ -15,6 +15,7 @@ const Personalpage = (props) => {
   const { mainPost } = useSelector((state) => state.post);
   const { login, user } = useSelector((state) => state.user);
   const { userId } = props.match.params;
+
   console.log(props, "@@");
 
   let subsArr = [];
@@ -81,7 +82,10 @@ const Personalpage = (props) => {
     }
     dispatch({
       type: SUBSCRIBE_USER_REQUEST,
-      data: userId,
+      data: {
+        userId: props.location.state.user.userId,
+        userNickname: props.location.state.user.nickname,
+      },
     });
   };
   return (
@@ -95,9 +99,13 @@ const Personalpage = (props) => {
               <br />
               <span>({mainPost.user && mainPost.user.userId})</span>
             </div>
-            {subsArr.includes(nick) ||
-            (user && user.userId === userId) ||
-            (user && user.toSubscribe) ? null : (
+            {user && user.notSubsUser ? (
+              <div className="btn_area nosub" disabled>
+                <span>+</span> 이웃 신청중
+              </div>
+            ) : subsArr.includes(nick) ||
+              (user && user.userId === userId) ||
+              (user && user.toSubscribe) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
                 <span>+</span> 이웃추가
               </div>
