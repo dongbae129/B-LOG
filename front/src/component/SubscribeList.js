@@ -43,4 +43,4 @@ const SubscribeList = ({ st }) => {
   );
 };
 
-export default SubscribeList;
+export default React.memo(SubscribeList);

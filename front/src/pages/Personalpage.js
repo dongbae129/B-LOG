@@ -11,25 +11,63 @@ import ContentDiv from "../component/Content_div";
 
 import { ht } from "../component/Content_div";
 import { usePreloader } from "../lib/PreloadContext";
+import swal from "sweetalert";
 const Personalpage = (props) => {
+  const [pagingCount, setPagingCount] = useState(0);
   const { mainPost } = useSelector((state) => state.post);
-  const { login, user } = useSelector((state) => state.user);
+  const { login, user, checkSubscribe } = useSelector((state) => state.user);
   const { userId } = props.match.params;
-
-  console.log(props, "@@");
-
   let subsArr = [];
+  let fullCount = Math.ceil(mainPost.pageCount / 3) | 0;
+  console.log(props, "!!");
+  const testPage = useCallback(() => {
+    let arr = [];
+    let totalPagecount = fullCount % 3 | 0;
+
+    if (pagingCount + 3 >= fullCount) {
+      arr = [...Array(3).keys()].map((v) => ++v + pagingCount);
+      if (mainPost.pageCount === 0) {
+        return [1];
+      }
+      if (totalPagecount === 0) return arr;
+      Array(3 - totalPagecount)
+        .fill(1)
+        .forEach(() => arr.pop());
+      return arr;
+    } else {
+      let arr = [...Array(3).keys()].map((v) => ++v + pagingCount);
+      return arr;
+    }
+  }, [fullCount, mainPost.pageCount, pagingCount]);
+  testPage();
+
+  const plusBtn = useCallback(
+    (e) => {
+      if (e.target.dataset.direction === "left") {
+        if (pagingCount - 3 < 0) return;
+        setPagingCount((prev) => (prev -= 3));
+      }
+      if (e.target.dataset.direction === "right") {
+        if (pagingCount + 3 >= fullCount) return;
+        setPagingCount((prev) => (prev += 3));
+      }
+    },
+    [fullCount, pagingCount]
+  );
+
   if (user && user.subscribe) {
-    user.subscribe.map((v) => subsArr.push(v.userNickname));
+    user.subscribe.map((v) => {
+      if (v.checked) subsArr.push(v.toUserNickname);
+      return 0;
+    });
   }
   const onClickPaging = (e) => {
     dispatch({
       type: GET_POSTS_REQUEST,
-      data: { userId, count: e.target.innerHTML * 9 - 9 },
+      data: { userId, count: e.target.innerHTML * 3 - 3 },
     });
   };
 
-  let fullCount = Math.ceil(mainPost.pageCount / 9) | 0;
   const findPost_count = useCallback(() => {
     let hitarr = [];
     let finalarr = [];
@@ -46,22 +84,21 @@ const Personalpage = (props) => {
     findPost = finalarr.map((v) => mainPost.posts.filter((j) => j.id === v.id));
     return findPost;
   }, [mainPost]);
-  // if (mainPost.length > 0) {
-  //   findPost_count();
-  // }
+
   findPost_count();
 
   const dispatch = useDispatch();
   const nick = mainPost.user && mainPost.user.nickname;
   usePreloader(() => {
+    console.log(props, "##################");
     dispatch({
       type: GET_POSTS_REQUEST,
       data: { userId, count: 0 },
     });
 
-    dispatch({
-      type: GET_USER_INFO_REQUEST,
-    });
+    // dispatch({
+    //   type: GET_USER_INFO_REQUEST,
+    // });
   });
   useEffect(() => {
     dispatch({
@@ -77,7 +114,7 @@ const Personalpage = (props) => {
 
   const onClickSubscirbe = () => {
     if (!login) {
-      alert("로그인 해주세요!!");
+      swal("로그인 해주세요!!", "", "warning");
       return;
     }
     dispatch({
@@ -99,15 +136,17 @@ const Personalpage = (props) => {
               <br />
               <span>({mainPost.user && mainPost.user.userId})</span>
             </div>
-            {user && user.notSubsUser ? (
+            {(user && user.notSubsUser) ||
+            (user && user.toSubscribe && user.toSubscribe.checked === false) ||
+            checkSubscribe ? (
               <div className="btn_area nosub" disabled>
-                <span>+</span> 이웃 신청중
+                <div>+</div> 이웃 신청중
               </div>
-            ) : subsArr.includes(nick) ||
+            ) : login ? null : subsArr.includes(nick) ||
               (user && user.userId === userId) ||
-              (user && user.toSubscribe) ? null : (
+              (user && user.toSubscribe && user.toSubscribe.checked) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
-                <span>+</span> 이웃추가
+                <div>+</div> 이웃추가
               </div>
             )}
           </div>
@@ -115,11 +154,16 @@ const Personalpage = (props) => {
         <div className="famous_posts-wrapper">
           <strong className="famous_posts-top strong-sect">TOP3</strong>
 
-          <div
-            className="famous_posts"
-            // style={{ width: "600px", border: "1px solid black" }}
-          >
-            <ol>
+          <div className="famous_posts">
+            {mainPost.countPost &&
+              mainPost.countPost.map((v, i) => (
+                <li key={v + i}>
+                  {ht(v.description).length > 30
+                    ? ht(v.description).slice(0, 31) + "..."
+                    : ht(v.description)}
+                </li>
+              ))}
+            {/* <ol>
               {findPost_count().map((v, i) => (
                 <li key={v + i}>
                   {ht(v[0].description).length > 30
@@ -127,37 +171,41 @@ const Personalpage = (props) => {
                     : ht(v[0].description)}
                 </li>
               ))}
-            </ol>
+            </ol> */}
           </div>
         </div>
       </div>
       <div className="personal-content">
-        {/* <div className="personal-content_sublist">
-          {user && <SubscribeList st={user} />}
-        </div> */}
         <div className="personal-content_body">
           {mainPost.posts &&
-            mainPost.posts.map((v, i) => (
-              <ContentDiv info={v} key={v + i} />
-              // <Detail props={v} key={v + i} />
-            ))}
+            mainPost.posts.map((v, i) => <ContentDiv info={v} key={v + i} />)}
         </div>
       </div>
-      <div className="personal-pagingcount" onClick={onClickPaging}>
-        {Array(fullCount)
-          .fill(1)
-          .map((v, i) => (
-            <div key={i} tabIndex="1">
-              {i + 1}
+      <div className="paging-wrap">
+        <div
+          className="paging-arrow paging-btn"
+          data-direction="left"
+          onClick={plusBtn}
+        >
+          <img src="/images/left-arrow.png" alt="" data-direction="left" />
+        </div>
+        <div className="personal-pagingcount" onClick={onClickPaging}>
+          {testPage().map((v, i) => (
+            <div key={v} className="paging-btn" tabIndex="1">
+              {v}
             </div>
-
-            // <div key={i} onClick={onClickPaging}>
-            //   {paging ? <div className="paging">{i + 1}</div> : i + 1}
-            // </div>
           ))}
+        </div>
+        <div
+          className="paging-arrow paging-btn"
+          data-direction="right"
+          onClick={plusBtn}
+        >
+          <img src="/images/right-arrow.png" alt="" data-direction="right" />
+        </div>
       </div>
     </div>
   );
 };
 
-export default Personalpage;
+export default React.memo(Personalpage);

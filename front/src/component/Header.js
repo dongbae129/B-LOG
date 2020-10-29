@@ -20,7 +20,7 @@ const Header = () => {
         </Link>
 
         <div className="button">
-          {!login && (
+          {login ? null : (
             <>
               <div className="header-btn">
                 <Link to="/login">로그인</Link>
@@ -37,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

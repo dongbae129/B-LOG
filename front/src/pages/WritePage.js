@@ -7,13 +7,12 @@ import { useDispatch } from "react-redux";
 import "../css/quill.snow.css";
 import "../css/write.css";
 import { UPLOAD_POST_REQUEST } from "../reducers/post";
-import { useEffect } from "react";
 import { useMemo } from "react";
 
 // Quill.register("modules/imageUpload", ImageUpload);
 // Quill.register("modules/imageResize", ImageResize);
 
-const image_src_arr = [];
+let image_src_arr = [];
 // let Quill = typeof window !== "undefined" && require("quill");
 // let ImageUpload =
 //   typeof window !== "undefined" && require("quill-image-upload");
@@ -62,6 +61,7 @@ const WritePage = (props) => {
   const [title, setTitle] = useState("");
   const [hashtag, setHashtag] = useState("");
 
+  console.log(image_src_arr, "&&&&&");
   let Quill = useMemo(
     () => (typeof window === "object" ? require("quill") : null),
     []
@@ -118,14 +118,6 @@ const WritePage = (props) => {
     let hash_arr = hashtag.split("#");
     hash_arr = hash_arr.map((v) => v.replace(",", "").trim());
     hash_arr.shift(0);
-    // const formData = new FormData();
-
-    // image_src_arr.map((v, i) => formData.append("image", v));
-    // formData.append("content", {
-    //   title: title,
-    //   description: value,
-    //   hashtag: hash_arr,
-    // });
 
     dispatch({
       type: UPLOAD_POST_REQUEST,
@@ -137,6 +129,8 @@ const WritePage = (props) => {
       },
       push: props.history.push,
     });
+    image_src_arr = [];
+    setValue(null);
   };
 
   return (

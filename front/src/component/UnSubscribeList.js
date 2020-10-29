@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   ACCEPT_SUBSCRIBE_USER_REQUEST,
   UNACCEPTSUBS_USER_REQUEST,
+  REFUSE_SUBSCRIBE_USER_REQUEST,
 } from "../reducers/user";
 import "../css/unsubscribelist.css";
 
@@ -17,6 +18,12 @@ const UnSubscribeList = (props) => {
     dispatch({
       type: ACCEPT_SUBSCRIBE_USER_REQUEST,
       data: UserId,
+    });
+  };
+  const onClickRefuse = (fromUserId) => () => {
+    dispatch({
+      type: REFUSE_SUBSCRIBE_USER_REQUEST,
+      data: fromUserId,
     });
   };
 
@@ -34,11 +41,11 @@ const UnSubscribeList = (props) => {
         {unacceptSubs.length > 0 ? (
           unacceptSubs.map((v, i) => {
             return (
-              <li>
+              <li key={v + i}>
                 <div className="unsubs-body" key={v + i}>
                   <div className="unsubs-img">img</div>
                   <div className="unsubs-content">
-                    <div className="unsubs-nickname">{v.userNickname}</div>
+                    <div className="unsubs-nickname">{v.fromUserNickname}</div>
                     <div className="unsubs-button">
                       <div
                         className="unsubs_click_button"
@@ -46,7 +53,12 @@ const UnSubscribeList = (props) => {
                       >
                         수락
                       </div>
-                      <div className="unsubs_click_button">거절</div>
+                      <div
+                        className="unsubs_click_button"
+                        onClick={onClickRefuse(v.fromUserId)}
+                      >
+                        거절
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -61,4 +73,4 @@ const UnSubscribeList = (props) => {
   );
 };
 
-export default UnSubscribeList;
+export default React.memo(UnSubscribeList);

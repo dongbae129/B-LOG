@@ -7,15 +7,38 @@ import {
 } from "../reducers/user";
 import { PLUS_POST_COUNT_REQUEST, GET_POSTS_REQUEST } from "../reducers/post";
 import { usePreloader } from "../lib/PreloadContext";
+import swal from "sweetalert";
+import querysString from "query-string";
 
 const DetailPage = (props) => {
-  const { user, login } = useSelector((state) => state.user);
+  const { user, login, checkSubscribe } = useSelector((state) => state.user);
   const { mainPost } = useSelector((state) => state.post);
-  const { userId } = props.location.state.User;
-  console.log(props, "**");
-  
+  // console.log(mainPost, "**");
+
   const dispatch = useDispatch();
 
+  // /detail/2/45/?nick=bb 13
+  const userId = querysString.parse(props.location.search).nick;
+
+  // usePreloader(() => {
+  //   console.log(props.match.params, "%%%%%%%%%%%%%%");
+  //   dispatch({
+  //     type: GET_POSTS_REQUEST,
+  //     data: {
+  //       userId: props.match.params.userId,
+  //       postId: props.match.params.postId,
+  //     },
+  //   });
+  //   // dispatch({
+  //   //   type: PLUS_POST_COUNT_REQUEST,
+  //   //   data: id,
+  //   // });
+  // }, [
+  //   dispatch,
+  //   props.location.state,
+  //   props.match.params.postId,
+  //   props.match.params.userId,
+  // ]);
   useEffect(() => {
     dispatch({
       type: GET_POSTS_REQUEST,
@@ -24,10 +47,6 @@ const DetailPage = (props) => {
         postId: props.match.params.postId,
       },
     });
-    // dispatch({
-    //   type: PLUS_POST_COUNT_REQUEST,
-    //   data: id,
-    // });
   }, [
     dispatch,
     props.location.state,
@@ -37,10 +56,13 @@ const DetailPage = (props) => {
 
   let subsArr = [];
   if (user && user.subscribe) {
-    user.subscribe.map((v) => subsArr.push(v.userNickname));
+    user.subscribe.map((v) => {
+      if (v.checked) subsArr.push(v.toUserNickname);
+      return 0;
+    });
   }
-
   const nick = mainPost && mainPost.User && mainPost.User.nickname.slice();
+  console.log(subsArr, subsArr.includes(nick), "!@!@!");
 
   usePreloader(() => {
     dispatch({
@@ -50,20 +72,25 @@ const DetailPage = (props) => {
         postId: props.match.params.postId,
       },
     });
+    console.log(mainPost, "^^^^^^^^^^^^");
+    console.log(props.location, "!@@@@@@@@!@!@!@!");
+    console.log(props.match.params, "%%%%%%%%%%%%%%");
   });
   useEffect(() => {
     dispatch({
       type: PLUS_POST_COUNT_REQUEST,
       data: mainPost.id,
     });
+  }, [dispatch, mainPost.id]);
+  useEffect(() => {
     dispatch({
       type: GET_USER_INFO_REQUEST,
       data: userId,
     });
-  }, [dispatch, mainPost.id, userId]);
+  }, [dispatch, userId]);
   const onClickSubscirbe = () => {
     if (!login) {
-      alert("로그인 해주세요!!");
+      swal("로그인 해주세요!!", "", "warning");
       return;
     }
     dispatch({
@@ -85,16 +112,18 @@ const DetailPage = (props) => {
               <br />
               <span>({mainPost.User && mainPost.User.userId})</span>
             </div>
-            {user && user.notSubsUser ? (
+            {(user && user.notSubsUser) ||
+            (user && user.toSubscribe && user.toSubscribe.checked === false) ||
+            checkSubscribe ? (
               <div className="btn_area nosub" disabled>
-                <span>+</span> 이웃 신청중
+                <div>+</div> 이웃 신청중
               </div>
-            ) : (user &&
+            ) : login ? null : (user &&
                 user.userId === (mainPost.User && mainPost.User.userId)) ||
               subsArr.includes(nick) ||
-              (user && user.toSubscribe) ? null : (
+              (user && user.toSubscribe && user.toSubscribe.checked) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>
-                <span>+</span> 이웃추가
+                <div>+</div> 이웃추가
               </div>
             )}
           </div>
@@ -136,4 +165,4 @@ const DetailPage = (props) => {
   );
 };
 
-export default DetailPage;
+export default React.memo(DetailPage);

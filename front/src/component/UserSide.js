@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import SubscribeList from "./SubscribeList";
 import { onClickLogout } from "./Header";
 import { usePreloader } from "../lib/PreloadContext";
+import swal from "sweetalert";
 
 const UserSide = () => {
   const [checkUserList, setCheckUserList] = useState(false);
@@ -40,7 +41,7 @@ const UserSide = () => {
   const onSubmitLogin = (e) => {
     e.preventDefault();
     if (!id || !password) {
-      alert("아이디 또는 비밀번호를 입력해주세요");
+      swal("아이디, 비밀번호 입력해주세요", "", "error");
       return;
     }
     dispatch(
@@ -152,4 +153,4 @@ const UserSide = () => {
   );
 };
 
-export default UserSide;
+export default React.memo(UserSide);

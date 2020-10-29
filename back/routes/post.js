@@ -89,6 +89,7 @@ router.get("/:userId/:postId", async (req, res) => {
 });
 router.get("/:userId", async (req, res) => {
   try {
+    console.log(req.query.count, "%%%%%%%%%%%%%%%%%%%");
     const user = await db.User.findOne({
       where: { userId: req.params.userId },
       attributes: ["id", "userId", "nickname"],
@@ -102,6 +103,10 @@ router.get("/:userId", async (req, res) => {
           attributes: ["src"],
         },
         {
+          model: db.User,
+          attributes: ["userId"],
+        },
+        {
           model: db.Hashtag,
           attributes: ["hashtag"],
         },
@@ -112,11 +117,27 @@ router.get("/:userId", async (req, res) => {
       offset: parseInt(req.query.count, 10),
       limit: parseInt(req.query.limit, 10),
     });
+    const countPost = await db.Post.findAll({
+      where: { UserId: id },
+      include: [
+        {
+          model: db.PostCount,
+          attributes: ["hit"],
+        },
+      ],
+      attributes: ["id", "description"],
+      order: [[{ model: db.PostCount }, "hit", "DESC"]],
+      limit: 3,
+    });
+    // console.log(JSON.stringify(countPost), "&*&*&*&*&*&*");
     const count = await db.Post.count({
       where: { UserId: id },
     });
 
-    const fullPosts = Object.assign({}, { posts, user, pageCount: count });
+    const fullPosts = Object.assign(
+      {},
+      { posts, user, countPost, pageCount: count }
+    );
 
     // const count = await db.Post.count({
     //   where: { UserId: id },

@@ -3,10 +3,10 @@ export const initialState = {
   signedup: false,
   subscribe: [],
   unacceptSubs: [],
-  login: false,
+  login: true,
   loginSuccess: false,
   checkUserId: null,
-  Test: null,
+  checkSubscribe: false,
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -37,6 +37,10 @@ export const ACCEPT_SUBSCRIBE_USER_REQUEST = "ACCEPT_SUBSCRIBE_USER_REQUEST";
 export const ACCEPT_SUBSCRIBE_USER_SUCCESSS = "ACCEPT_SUBSCRIBE_USER_SUCCESSS";
 export const ACCEPT_SUBSCRIBE_USER_FAILURE = "ACCEPT_SUBSCRIBE_USER_FAILURE";
 
+export const REFUSE_SUBSCRIBE_USER_REQUEST = "REFUSE_SUBSCRIBE_USER_REQUEST";
+export const REFUSE_SUBSCRIBE_USER_SUCCESSS = "REFUSE_SUBSCRIBE_USER_SUCCESSS";
+export const REFUSE_SUBSCRIBE_USER_FAILURE = "REFUSE_SUBSCRIBE_USER_FAILURE";
+
 export const CHECK_USER_ID_REQUEST = "CHECK_USER_ID_REQUEST";
 export const CHECK_USER_ID_SUCCESSS = "CHECK_USER_ID_SUCCESSS";
 export const CHECK_USER_ID_FAILURE = "CHECK_USER_ID_FAILURE";
@@ -61,12 +65,14 @@ export default (state = initialState, action) => {
         user: action.data,
         login: true,
         checkUserId: null,
+        checkSubscribe: false,
       };
     }
     case GET_USER_INFO_FAILURE: {
       return {
         ...state,
         checkUserId: null,
+        login: false,
       };
     }
     case LOG_OUT_SUCCESSS: {
@@ -92,7 +98,14 @@ export default (state = initialState, action) => {
         loginSuccess: true,
       };
     }
+    case SUBSCRIBE_USER_SUCCESSS: {
+      return {
+        ...state,
+        checkSubscribe: true,
+      };
+    }
     case ACCEPT_SUBSCRIBE_USER_SUCCESSS:
+    case REFUSE_SUBSCRIBE_USER_SUCCESSS:
     case UNACCEPTSUBS_USER_SUCCESSS: {
       return {
         ...state,
@@ -102,7 +115,6 @@ export default (state = initialState, action) => {
     case CHECK_USER_ID_REQUEST: {
       return {
         ...state,
-        Test: "무ㅗ지",
       };
     }
     case CHECK_USER_ID_SUCCESSS: {

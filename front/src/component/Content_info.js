@@ -28,8 +28,11 @@ const ContentInfo = ({ props }) => {
       <Link
         to={{
           pathname: `/detail/${props.User.id}/${props.id}`,
-          state: props,
+          search: `?nick=${props.User.userId}`,
         }}
+
+        // to={`/detail/${props.User.id}/${props.id}`}
+        // state={{ test: "!@#!@$!@$" }}
       >
         {/* <div dangerouslySetInnerHTML={{ __html: props.description }}></div> */}
         {/* <span>{props.description.length > 200 ? `${props.description.slice(0, 200)}...` : props.description}</span> */}
@@ -39,4 +42,4 @@ const ContentInfo = ({ props }) => {
   );
 };
 
-export default ContentInfo;
+export default React.memo(ContentInfo);

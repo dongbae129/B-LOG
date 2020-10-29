@@ -7,12 +7,21 @@ export const ht = (data) =>
   });
 const ContentDiv = ({ info }) => {
   const { title, description, Images, updatedAt } = info;
+  // usePreloader({
+  //   type: TEST_USER_POSTS_REQUEST,
+  //   data: info,
+  // });
+  // console.log(test, "*(*(*");
+
   return (
     <div className="content_div_wrap">
       {Images[0] ? (
         <>
           <Link
-            to={{ pathname: `/detail/${info.UserId}/${info.id}`, state: info }}
+            to={{
+              pathname: `/detail/${info.UserId}/${info.id}`,
+              state: { User: info },
+            }}
           >
             <img src={`http://211.193.71.154:8020/${Images[0].src}`} alt="" />
 
@@ -30,9 +39,12 @@ const ContentDiv = ({ info }) => {
       ) : (
         <div>
           <Link
-            to={{ pathname: `/detail/${info.UserId}/${info.id}`, state: info }}
+            to={{
+              pathname: `/detail/${info.UserId}/${info.id}?nick=${info.User.userId}`,
+              state: { User: info },
+            }}
           >
-            {title}{" "}
+            {title}
             <div>
               {ht(description).length > 150
                 ? `${ht(description).slice(0, 150)}...`
@@ -46,4 +58,4 @@ const ContentDiv = ({ info }) => {
   );
 };
 
-export default ContentDiv;
+export default React.memo(ContentDiv);

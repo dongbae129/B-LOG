@@ -27,6 +27,9 @@ import {
   CHECK_USER_ID_REQUEST,
   CHECK_USER_ID_SUCCESSS,
   CHECK_USER_ID_FAILURE,
+  REFUSE_SUBSCRIBE_USER_SUCCESSS,
+  REFUSE_SUBSCRIBE_USER_FAILURE,
+  REFUSE_SUBSCRIBE_USER_REQUEST,
 } from "../reducers/user";
 
 function signupAPI(data) {
@@ -184,14 +187,42 @@ function* watchAcceptSubscribe() {
   yield takeEvery(ACCEPT_SUBSCRIBE_USER_REQUEST, acceptSubscribe);
 }
 
-function unAcceptSubscAPI(userId) {
-  return axios.get(`/user/unacceptsubs?userId=${userId}`, {
+function refuseSubscribeAPI(userId) {
+  return axios.post(
+    `/user/refuseSubscribe?userId=${userId}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+}
+function* refuseSubscribe(action) {
+  try {
+    const result = yield call(refuseSubscribeAPI, action.data);
+    yield put({
+      type: REFUSE_SUBSCRIBE_USER_SUCCESSS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e, "##");
+    yield put({
+      type: REFUSE_SUBSCRIBE_USER_FAILURE,
+    });
+  }
+}
+
+function* watchRefuseSubscribe() {
+  yield takeEvery(REFUSE_SUBSCRIBE_USER_REQUEST, refuseSubscribe);
+}
+
+function unAcceptSubscAPI() {
+  return axios.get(`/user/unacceptsubs`, {
     withCredentials: true,
   });
 }
 function* unAcceptSubsc(action) {
   try {
-    const result = yield call(unAcceptSubscAPI, action.data);
+    const result = yield call(unAcceptSubscAPI);
     console.log(result.data, "()()(");
     yield put({
       type: UNACCEPTSUBS_USER_SUCCESSS,
@@ -245,6 +276,7 @@ export default function* userSaga() {
     fork(watchLogout),
     fork(watchSubscribe),
     fork(watchAcceptSubscribe),
+    fork(watchRefuseSubscribe),
     fork(watchUnAcceptSubs),
     fork(watchCheckUserId),
   ]);

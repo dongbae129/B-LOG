@@ -93,33 +93,14 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-.btn_area {
-  width: 100%;
-  margin: 10px 0;
-  padding: 5px 0;
-  border: 1px solid #dbe4ff;
-  text-align: center;
-  font-weight: 700;
-  cursor: pointer;
-}
-.btn_area:hover {
-  background-color: #e7f5ff;
-}
-.btn_area span {
-  font-size: 20px;
-  color: #38d9a9;
-}
-.btn_area.nosub {
-  background-color: #dee2e6;
-  opacity: 0.7;
-}
-.personal-pagingcount {
-  display: flex;
-  justify-content: center;
 
-  width: 1000px;
+.paging-wrap {
+  display: flex;
+  width: 700px;
+  margin: 0 auto;
+  justify-content: center;
 }
-.personal-pagingcount > div {
+.paging-btn {
   width: 25px;
   height: 25px;
   text-align: center;
@@ -131,6 +112,26 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.paging-arrow > img {
+  width: 100%;
+}
+.personal-pagingcount {
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
+/* .personal-pagingcount > div {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  margin-top: 10px;
+  font-size: 20px;
+  padding: 5px;
+  border: 2px solid #a5d8ff;
+  border-radius: 4px;
+  cursor: pointer;
+} */
 .personal-pagingcount > div:hover {
   background-color: #e7f5ff;
 }

@@ -63,6 +63,13 @@ router.get("/", isLoggedIn, async (req, res) => {
               { checked: true },
             ],
           },
+          {
+            [Op.and]: [
+              { fromUserId: req.user.userId },
+              { toUserId: req.query.userId },
+              { checked: false },
+            ],
+          },
         ],
       },
     });
@@ -141,6 +148,14 @@ router.post("/logout", isLoggedIn, (req, res) => {
 
 router.post("/subscribe", isLoggedIn, async (req, res) => {
   try {
+    const existSubscribe = await db.Subscribe.findOne({
+      where: {
+        [Op.and]: [{ fromUserId: req.user.userId }, { toUserId: req.query.id }],
+      },
+    });
+    if (existSubscribe) {
+      return res.status(400).send("이미 신청중");
+    }
     const subscribe = await db.Subscribe.create({
       UserId: req.user.id,
       fromUserId: req.user.userId,
@@ -154,11 +169,34 @@ router.post("/subscribe", isLoggedIn, async (req, res) => {
     console.error(e);
   }
 });
+router.post("/refuseSubscribe", isLoggedIn, async (req, res) => {
+  try {
+    console.log(req.user.userId, req.query.userId, "^&^&^&");
+
+    await db.Subscribe.destroy({
+      where: {
+        [Op.and]: [
+          { toUserId: req.user.userId },
+          { fromUserId: req.query.userId },
+          { checked: false },
+        ],
+      },
+    });
+    const unSubscribe = await db.Subscribe.findAll({
+      where: {
+        [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
+      },
+    });
+    res.json(unSubscribe);
+  } catch (e) {
+    console.error(e);
+  }
+});
 router.get("/unacceptsubs", isLoggedIn, async (req, res) => {
   try {
     const subscirbeList = await db.Subscribe.findAll({
       where: {
-        [Op.and]: [{ toUserId: req.query.userId }, { checked: false }],
+        [Op.and]: [{ toUserId: req.user.userId }, { checked: false }],
       },
     });
     console.log(JSON.stringify(subscirbeList), "**");
