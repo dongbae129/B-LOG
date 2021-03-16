@@ -47,8 +47,10 @@
 }
 .detail_content_header .hashtag {
   cursor: pointer;
-  background-color: #e9ecef;
+  background-color: #dee2e6;
   margin-right: 10px;
+  font-weight: 600;
+  color: #5c7cfa;
 }
 .detail_content_header .hashtag:hover {
   background-color: #adb5bd;

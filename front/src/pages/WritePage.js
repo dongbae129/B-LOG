@@ -39,14 +39,16 @@ const uploadImage = {
       const formData = new FormData();
       formData.append("image", file);
 
-      fetch("http://211.193.71.154:8020/api/user/uploads", {
+      // fetch("http://localhost:8020/api/user/uploads", {
+      fetch("http://27.96.135.106:8020/api/user/uploads", {
         method: "POST",
         body: formData,
       })
         .then((response) => response.json())
         .then((result) => {
           image_src_arr.push(...result);
-          resolve(`http://211.193.71.154:8020/${result}`);
+          // resolve(`http://localhost:8020/${result}`);
+          resolve(`http://27.96.135.106:8020/${result}`);
         })
         .catch((error) => {
           reject("Upload failed");

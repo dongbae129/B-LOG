@@ -18,7 +18,11 @@ const DetailPage = (props) => {
   const dispatch = useDispatch();
 
   // /detail/2/45/?nick=bb 13
+
+  // const userId = props.location.state.User.User.userId;
   const userId = querysString.parse(props.location.search).nick;
+  // console.log(userId, "%%$%");
+  console.log(userId, "!");
 
   // usePreloader(() => {
   //   console.log(props.match.params, "%%%%%%%%%%%%%%");
@@ -118,7 +122,7 @@ const DetailPage = (props) => {
               <div className="btn_area nosub" disabled>
                 <div>+</div> 이웃 신청중
               </div>
-            ) : login ? null : (user &&
+            ) : (user &&
                 user.userId === (mainPost.User && mainPost.User.userId)) ||
               subsArr.includes(nick) ||
               (user && user.toSubscribe && user.toSubscribe.checked) ? null : (

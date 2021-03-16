@@ -142,7 +142,7 @@ const Personalpage = (props) => {
               <div className="btn_area nosub" disabled>
                 <div>+</div> 이웃 신청중
               </div>
-            ) : login ? null : subsArr.includes(nick) ||
+            ) : subsArr.includes(nick) ||
               (user && user.userId === userId) ||
               (user && user.toSubscribe && user.toSubscribe.checked) ? null : (
               <div className="btn_area" onClick={onClickSubscirbe}>

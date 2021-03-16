@@ -66,3 +66,13 @@ a {
   margin: 10px 0;
   margin-left: 20px;
 }
+.mainhash{
+  cursor: pointer;
+  background-color: #dee2e6;
+  margin-right: 10px;
+  font-weight: 600;
+  color: #5c7cfa;
+}
+.mainhash:hover{
+  background-color: #adb5bd;
+}

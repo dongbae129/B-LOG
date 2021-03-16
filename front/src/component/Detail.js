@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ContentInfo from "./Content_info";
 
 const Detail = ({ props }) => {
@@ -10,10 +11,18 @@ const Detail = ({ props }) => {
             <ContentInfo props={props} />
           </div>
           <div className="content-image">
-            <img
-              src={`http://211.193.71.154:8020/${props.Images[0].src}`}
-              alt=""
-            />
+            <Link
+              to={{
+                pathname: `/detail/${props.User.id}/${props.id}`,
+                search: `?nick=${props.User.userId}`,
+              }}
+            >
+              <img
+                // src={`http://localhost:8020/${props.Images[0].src}`}
+                src={`http://27.96.135.106:8020/${props.Images[0].src}`}
+                alt=""
+              />
+            </Link>
           </div>
         </>
       ) : (
