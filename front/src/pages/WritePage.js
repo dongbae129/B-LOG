@@ -40,7 +40,7 @@ const uploadImage = {
       formData.append("image", file);
 
       // fetch("http://localhost:8020/api/user/uploads", {
-      fetch("http://27.96.135.106:8020/api/user/uploads", {
+      fetch("http://localhost:8020/api/user/uploads", {
         method: "POST",
         body: formData,
       })
@@ -48,7 +48,7 @@ const uploadImage = {
         .then((result) => {
           image_src_arr.push(...result);
           // resolve(`http://localhost:8020/${result}`);
-          resolve(`http://27.96.135.106:8020/${result}`);
+          resolve(`http://localhost:8020/${result}`);
         })
         .catch((error) => {
           reject("Upload failed");

@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
           model: db.PostCount,
         },
       ],
-      limit: 10,
+      limit: parseInt(req.query.limit, 10),
       order: [["createdAt", "DESC"]],
     });
     res.json(posts);

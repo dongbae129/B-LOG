@@ -24,7 +24,7 @@ const ContentDiv = ({ info }) => {
             }}
           >
             {/* <img src={`http://localhost:8020/${Images[0].src}`} alt="" /> */}
-            <img src={`http://27.96.135.106:8020/${Images[0].src}`} alt="" />
+            <img src={`http://localhost:8020/${Images[0].src}`} alt="" />
 
             <div>
               {title}{" "}

@@ -19,7 +19,7 @@ const Detail = ({ props }) => {
             >
               <img
                 // src={`http://localhost:8020/${props.Images[0].src}`}
-                src={`http://27.96.135.106:8020/${props.Images[0].src}`}
+                src={`http://localhost:8020/${props.Images[0].src}`}
                 alt=""
               />
             </Link>

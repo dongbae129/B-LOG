@@ -81,6 +81,7 @@ export default (state = initialState, action) => {
       console.log("222222222222222!!!!");
       return {
         ...state,
+        // mainPost: action.data,
         mainPost: state.mainPost.concat(action.data),
         hasMorePost: action.data.length === 10,
       };
