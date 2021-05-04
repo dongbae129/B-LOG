@@ -1,6 +1,6 @@
 About B-log
 
-https://bdhportfolio.ga/#moveproject 해당 사이트에서 데모사이트로 이동할수 있습니다.
+https://baeportfolio.xyz/#moveproject 해당 사이트에서 데모사이트로 이동할수 있습니다.
 
 -설치방법-
 
