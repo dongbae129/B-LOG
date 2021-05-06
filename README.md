@@ -30,16 +30,13 @@ https://baeportfolio.xyz/#moveproject<br> 해당 사이트에서 데모사이트
     </ul>
   </blockquote>
   <h2>⚙️ 설치방법</h2>
-  <blockquote>
+    <blockquote>
     <ul>
       <li><h4>1. 기본설정</h4></li>
-      <blockquote>
         <li>1-1. 설치하고자 하는 컴퓨터에 git, node, mysql이 설치되어 있어야 합니다.</li>
         <li>1-2. 터미널에서 설치하고자 하는 폴더에  git clone https://github.com/dongbae129/B-LOG.git 입력.</li>
         <li>1-3. back, fornt 폴더에서 각각 터미널에 npm i 명령어로 모듈 설치(front는 설치시간이 꽤 걸립니다).</li>
-      </blockquote>
       <li><h4>2. back폴더 설정</h4></li>
-      <blockquote>
         <ul>
           <li>2-1. .env파일 생성후 아래의 내용 작성</li>
           <p>COOKIE_SECRET=쿠키이름(아무거나 입력하면 됩니다. 단,보안을 위하여 유추할수 있는 단어는 사용하지 않습니다.)</p>
@@ -56,14 +53,11 @@ DB_PASSWORD=123456
           <li>2-4. uploads폴더 생성(사진보관 폴더)</li>
           <li>2-5. 터미널에 npm run dev 를 입력하여 서버구동 확인. (자세한 script는 package.json 참고)</li>
         </ul>
-      </blockquote>
       <li><h4>3. front폴더 설정</h4></li>
-      <blockquote>
         <ul>
           <li>3-1. 서버와 통신하는 주소는 기본인 localhost:8020으로 설정되어있습니다</li>
           <li>3-2. SSR을 적용하고 싶을시 1.npm run build. 2.npm run build:server. 3.npm run start:server(package.json 참조) </li>
         </ul>
-      </blockquote>
     </ul>
   </blockquote>
   <h2>:pushpin: 주요기능</h2>
