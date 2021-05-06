@@ -123,3 +123,7 @@ DB_PASSWORD=123456
     </tbody>
 </table>
 
+<h2>:pushpin: 프로세스 흐름</h2>
+
+![K-005](https://user-images.githubusercontent.com/36911316/117305625-e8a14d00-aeb9-11eb-9192-dbcd0a3eb891.png)
+
