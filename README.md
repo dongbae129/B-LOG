@@ -4,11 +4,18 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/36911316/117271041-c8ab6280-ae94-11eb-8a79-2e09bc67ebd2.png" width="300px" height="300px">
 </p>
+<p align="center">
+  <span><img src="https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white"></span>
+  <span><img src="https://img.shields.io/badge/-Redux--Saga-brightgreen?logo=redux-saga"></span>
+  <span><img src="https://img.shields.io/badge/-Mysql-blue?logo=mysql&logoColor=black"></span>
+  <span><img src="https://img.shields.io/badge/-Express-gray?logo=javascript&logoColor=white"></span>
+  <span><img src="https://img.shields.io/badge/-React--SSR-orange?logo=react&logoColor=white"></span>
+</p>
 
 https://baeportfolio.xyz/#moveproject<br> 해당 사이트에서 데모사이트로 이동할수 있습니다.
 
   <h2>:memo: B-log 서비스 소개</h2>
-
+  <h3>이웃신청을 포함한 블로그 제작 사이트 입니다.</h3>
   <h3>:family: 이웃 기능</h3>
   <blockquote>
     <ul>
